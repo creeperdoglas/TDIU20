@@ -19,6 +19,7 @@ public:
 
   Time operator+(int const n) const; // Lägger till N sekunder
   Time operator++(int);              // post increment
+  // Time operator++(); kanske en till efter?, isåfall även på decrement med, testa sen.
 
   Time operator-(int const n) const; // tar bort sekunder
   Time operator--(int);              // post decrement

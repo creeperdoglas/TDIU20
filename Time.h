@@ -6,6 +6,7 @@ class Time
 public:
   Time() = default;
   Time(int const h, int const m, int const s);
+  bool check_for_invalid_input(int const h, int const m, int const s);
   Time(std::string const &t);
 
   int get_hour() const;
@@ -34,7 +35,6 @@ public:
 
 private:
   int hour{}, minute{}, second{};
-  bool check_for_invalid_input(int const h, int const m, int const s);
   void format_into_ostream(int const n, std::ostream &os) const;
 };
 // förstår inte riktigt varför man inte får använda friend (skulle då kunna lägga in klassen) Antar att det är dålig praxis då man inte vill att sådant i public ska komma åt sådant i private?

@@ -7,7 +7,15 @@
 #include "Time.h"
 
 using namespace std;
-bool check_for_invalid_input(int const h, int const m, int const s)
+
+Time::Time(int const h, int const m, int const s) : hour{h}, minute{m}, second{s}
+{
+  if (check_for_invalid_input(h, m, s))
+  {
+    throw invalid_argument{"invalid_input"}; // std:: innan?
+  }
+}
+bool Time::check_for_invalid_input(int const h, int const m, int const s)
 {
   if (h > 23 || h < 0 || m > 59 || m < 0 || s > 59 || s < 0)
   {
@@ -16,13 +24,6 @@ bool check_for_invalid_input(int const h, int const m, int const s)
   else
   {
     return false;
-  }
-}
-Time::Time(int const h, int const m, int const s) : hour{h}, minute{m}, second{s}
-{
-  if (check_for_invalid_input(h, m, s))
-  {
-    throw invalid_argument{"invalid_input"}; // std:: innan?
   }
 }
 
@@ -34,10 +35,11 @@ Time::Time(string const &t) // const &t?
     hour = stoi(t.substr(0, 2));   // börja på pos 0 och ta två chars, gör sedan om till int
     minute = stoi(t.substr(3, 2)); // samma här
     second = stoi(t.substr(6, 2)); // och här
-  }
-  else if (check_for_invalid_input(hour, minute, second))
-  {
-    throw invalid_argument{"invalid_input"};
+
+    if (check_for_invalid_input(hour, minute, second))
+    {
+      throw invalid_argument{"invalid_input"};
+    }
   }
   else
   {

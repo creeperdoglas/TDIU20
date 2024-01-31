@@ -50,7 +50,7 @@ public:
 
   private:
     List_iterator() = default;
-    Element *pos; // list_iterator(element *p) var det som tidigare stod, ta en titt senare
+    Element *pos; // list_iterator(element *p) var det som tidigare stod, ta en titt senare. detta är en variabel istället för funktion borde bli bättre
   };
   List_iterator begin() const;
   List_iterator end() const;

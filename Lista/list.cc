@@ -11,3 +11,4 @@ List::List()
   last->prev = first;
   first->next = last;
 }
+list::List

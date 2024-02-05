@@ -126,6 +126,10 @@ TEST_CASE("to_string")
       CHECK((t1 != t1) == false);
       CHECK((t0 >= t1) == false);
       CHECK((t0 >= t0) == true);
+      CHECK((++t1).to_string() == "12:00:00");
+      CHECK((t1++).to_string() == "12:00:00");
+      CHECK((--t0).to_string() == "23:59:59");
+      CHECK((t0--).to_string() == "23:59:59");
    }
 }
 TEST_CASE("Output Stream Operator")

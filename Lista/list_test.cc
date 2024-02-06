@@ -122,21 +122,124 @@ TEST_CASE("Copy constructor")
 
 TEST_CASE("Copy operator")
 {
-  sstringstream ss{};
+  stringstream ss{};
   List list{5, 6, 10};
   List list2 = list;
-  sslist << list2;
+  ss << list2;
   CHECK(ss.str() == "5 6 10");
 }
 
-// move constructor
-// move operator
-// index operator
-// iterator
-// operator =
-// operator ==
-// operator !=
-// operator *
-// operator ++
-// for loop
+TEST_CASE("Move constructor")
+{
+  stringstream ss{};
+  List list{5, 7, 6};
+  List list2{move(list)};
+  ss << list2;
+  CHECK(ss.str() == "5 6 7");
+}
+TEST_CASE("Move operator")
+{
+  stringstream ss{};
+  List list{5, 7, 6};
+  List list2 = move(list);
+  ss << list2;
+  CHECK(ss.str() == "5 6 7");
+}
+TEST_CASE("index operator")
+{
+  List list{5, 6, 7};
+  CHECK(list[0] == 5);
+  CHECK(list[1] == 6);
+  CHECK(list[2] == 7);
+  list[0] = 10;
+  list[1] = 11;
+  list[2] = 12;
+  CHECK(list[0] == 10);
+  CHECK(list[1] == 11);
+  CHECK(list[2] == 12);
+  SECTION("Exception")
+  {
+    List list{1, 2, 3, 4, 5};
+    CHECK_THROWS(list[5]);
+  }
+  SECTION("EMPTY")
+  {
+    List list{};
+    CHECK_THROWS(list[0]);
+  }
+}
+TEST_CASE("List_Iterator")
+{
+  // både == och = testas i samma test
+  SECTION("==")
+  {
+    List list{5, 6, 7};
+    List list2{8, 9, 10};
+    List list3{5, 6, 7, 8};
+    List::List_iterator itA{list.begin()};
+    List::List_iterator itB{list.begin()};
+    CHECK(itA == itB);
+    List::List_iterator itC{list2.begin()};
+    CHECK_FALSE(itA == itC);
+    List::List_iterator itD{list3.begin()};
+    CHECK_FALSE(itA == itD);
+  }
+
+  SECTION("!=")
+  {
+    List list{5, 6, 7};
+    List list2{8, 9, 10};
+    List list3{5, 6, 7, 8};
+    List::List_iterator itA{list.begin()};
+    List::List_iterator itB{list.begin()};
+    CHECK_FALSE(itA != itB);
+    List::List_iterator itC{list2.begin()};
+    CHECK(itA != itC);
+    List::List_iterator itD{list3.begin()};
+    CHECK(itA != itD);
+  }
+
+  SECTION("*")
+  {
+    List list{5, 6, 7};
+    List::List_iterator itA{list.begin()};
+    CHECK(*itA == 5);
+
+    List::List_iterator itB{list.end()};
+    CHECK_THROWS(*itB); // då end pekar en framför sista elementet, så ska det kasta ett undantag
+  }
+
+  SECTION("++")
+  {
+    List list{5, 6, 7};
+    List::List_iterator itA{list.begin()};
+    ++itA;
+    CHECK(*itA == 6);
+    ++itA;
+    CHECK(*itA == 7);
+    ++itA;
+    CHECK_THROWS(++itA); // samma som tidigare, alltså det är här list.end pekar
+  }
+  SECTION("For-loop")
+  {
+    stringstream ss{};
+    List list{5, 6, 7};
+    for (auto it = list.begin(); it != list.end(); ++it)
+    {
+      ss << *it << " ";
+    }
+    CHECK(ss.str() == "5 6 7 ");
+  }
+  SECTION("For-loop empty")
+  {
+    stringstream ss{};
+    List list{};
+    for (auto it = list.begin(); it != list.end(); ++it)
+    {
+      ss << *it << " ";
+    }
+    CHECK(ss.str() == "");
+  }
+}
+
 // fixa sublist och lägga till test för det

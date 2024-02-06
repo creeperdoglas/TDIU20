@@ -25,6 +25,7 @@ private:
 
 public:
   List();
+  ~List();
   List(std::initializer_list<int> const &data);
   List(List const &L);
   List(List &&L);

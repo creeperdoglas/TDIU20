@@ -163,8 +163,8 @@ ostream &operator<<(ostream &os, List const &L)
     {
       os << " ";
     }
-    return os;
-  }
+    }
+  return os;
 }
 // elementkonstruktor
 List::Element::Element(int N) : value{N} {}

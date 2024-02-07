@@ -241,5 +241,10 @@ TEST_CASE("List_Iterator")
     CHECK(ss.str() == "");
   }
 }
-
+TEST_CASE("Sublist")
+{
+  std::stringstream ss{};
+  List list{0, 2, 4, 8};
+  List sub_list = *(list.sub({0, 1, 2}));
+}
 // fixa sublist och lägga till test för det

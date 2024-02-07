@@ -163,7 +163,7 @@ ostream &operator<<(ostream &os, List const &L)
     {
       os << " ";
     }
-    }
+  }
   return os;
 }
 // elementkonstruktor
@@ -201,6 +201,14 @@ List::List_iterator &List::List_iterator::operator++()
     return *this;
   }
 }
+List::List_iterator &List::List_iterator::operator=(const List::List_iterator &other)
+{
+  if (this != &other)
+  {
+    pos = other.pos;
+  }
+  return *this;
+}
 // jämförelseoperator
 bool List::List_iterator::operator==(List_iterator const &it) const
 {
@@ -224,5 +232,35 @@ int &List::List_iterator::operator*() const
   else
   {
     return pos->value;
+  }
+}
+List::List_iterator List::insert(List_iterator position, const int &N)
+{
+  Element *temp = position.pos;
+  Element *new_element = new Element{N};
+  while (temp != last && temp->value <= N)
+  {
+    temp = temp->next;
+  }
+  new_element->next = temp;
+  new_element->prev = temp->prev;
+  temp->prev->next = new_element;
+  temp->prev = new_element;
+  return List_iterator{new_element};
+}
+void List::sub(int index, const List &sublist)
+{
+  if (index < 0 || index > size())
+  {
+    throw out_of_range("Index out of range");
+  }
+
+  auto it = begin();
+  ++it;
+
+  for (const auto &element : sublist)
+  {
+    it = insert(it, element);
+    ++it;
   }
 }

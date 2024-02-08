@@ -6,6 +6,46 @@
 #include <sstream>
 #include "Time.h"
 
+// Information om komplettering:
+//   Kompletteringen kan gälla hela filen och alla filer i labben,
+//   så får ni komplettering på en sak, kan samma sak förekomma på
+//   fler ställen utan att jag skrivit det.
+//
+//   Komplettering lämnas in via sendlab efter senast en (1) vecka
+//
+//   Har ni frågor om kompletteringen kan ni maila mig på:
+//   Malte.Nilsson@liu.se
+
+// Komplettering: Upprepa inte strömmanipulatorer som gäller tills vidare.
+// Komplettering: stoi kastar ett eget undantag som inte ska läcka vidare till er användare.
+// Komplettering: Kodupprepning i stegningsoperatorerna.
+
+// Komplettering: operator string används inte och testas inte.
+
+// Komplettering: En testfil ska pröva de funktioner som
+//   ni har skapat. Det innebär att man vill pröva alla
+//   möjliga fall (även specialfall). Vi vill ju vara säkra
+//   på att vi har en funktion som fungerar. En bra fråga är:
+//   "Övertygar detta den som rättar att er funktion
+//   fungerar utan att kolla i Time.cc-filen?"
+
+// Kommentar: skriv datamedlemsinitieringslistan på egen rad
+// Kommentar/Tips: Om det enda som returneras i en if-sats
+// är true och else false kan man returnera villkoret direkt.
+// Ex:
+// if (x == 10)
+//     return true;
+// else
+//     return false;
+//
+// Kan skrivas som endast:
+// return x == 10;
+
+// Komplettering (bonus) operator- fungerar inte korrekt
+// funkar inte för t.ex
+// 	Time t{0, 0, 0};
+//	t = t - 129605;
+
 using namespace std;
 
 Time::Time(int const h, int const m, int const s) : hour{h}, minute{m}, second{s}
@@ -304,6 +344,7 @@ ostream &operator<<(ostream &os, Time const &t)
   os << t.to_string();
   return os;
 }
+
 istream &operator>>(istream &is, Time &t)
 {
   int h, m, s;

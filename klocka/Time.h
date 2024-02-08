@@ -1,6 +1,29 @@
 #pragma once // endast kompileras en gång
 #include <iostream>
 #include <string>
+
+
+// Information om komplettering:
+//   Siffrorna hänvisar till rättningsprotokollet som finns på
+//   kurshemsidan -> läsning -> Literatur -> "Uppgruppens bedömningsprotokoll"
+//   Kompletteringen kan gälla hela filen och alla filer i labben,
+//   så får ni komplettering på en sak, kan samma sak förekomma på
+//   fler ställen utan att jag skrivit det.
+//
+//   Komplettering lämnas in via sendlab efter senast en (1) vecka
+//
+//   Har ni frågor om kompletteringen kan ni maila mig på:
+//   Malte.Nilsson@liu.se
+
+
+// Komplettering: Interna medlemsfunktioner i den publika delen.
+// Kommentar: pragma once ingår inte i kursen och är kompilator "specefikt"
+
+
+// Komplettering (bonus): operator+ för kommutativa fallet saknas.
+// Saknar operatorer för Bonus
+// += och -= 
+
 class Time
 {
 public:
@@ -38,5 +61,6 @@ private:
   void format_into_ostream(int const n, std::ostream &os) const;
 };
 // förstår inte riktigt varför man inte får använda friend (skulle då kunna lägga in klassen) Antar att det är dålig praxis då man inte vill att sådant i public ska komma åt sådant i private?
+//// Det stämmer
 std::ostream &operator<<(std::ostream &os, const Time &t);
 std::istream &operator>>(std::istream &is, Time &t);

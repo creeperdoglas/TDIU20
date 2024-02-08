@@ -243,8 +243,28 @@ TEST_CASE("List_Iterator")
 }
 TEST_CASE("Sublist")
 {
-  std::stringstream ss{};
-  List list{0, 2, 4, 8};
-  List sub_list = *(list.sub({0, 1, 2}));
+  stringstream ss{};
+  List list{5, 6, 7, 8, 9};
+  List *sub_list{list.sub({0, 1, 1, 1, 1})};
+  ss << *sub_list;
+  CHECK(ss.str() == "5 6 6 6 6");
+  SECTION("More")
+  {
+
+    stringstream ss{};
+
+    List list{1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
+    List *sub_list{list.sub({0, 2, 3, 4, 6, 10})}; // [1, 2, 3, 5, 13, 89]
+    ss << *sub_list;
+    CHECK(ss.str() == "1 2 3 5 13 89");
+  }
+  SECTION("Exception")
+  {
+    stringstream ss{};
+    stringstream ss2{};
+    List list{0, 1, 2, 3};
+    CHECK_THROWS(list.sub({-1, 5}));
+    CHECK_THROWS(list.sub({2, 1, 2}));
+  }
 }
 // fixa sublist och lägga till test för det

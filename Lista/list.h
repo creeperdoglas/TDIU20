@@ -36,16 +36,12 @@ public:
   void insert(int const N) const;
   void remove(int const N) const;
   int size() const;
+  void append(int const N) const;
   friend std::ostream &operator<<(std::ostream &os, List const &L);
 
   class List_iterator
   {
   public:
-    using difference_type = std::ptrdiff_t;
-    using value_type = int;
-    using pointer = int *;
-    using reference = int &;
-    using iterator_category = std::bidirectional_iterator_tag;
     friend class List;
     List_iterator &operator=(List_iterator const &);
     List_iterator &operator++();
@@ -61,5 +57,6 @@ public:
   List_iterator begin() const;
   List_iterator end() const;
   List_iterator insert(List_iterator position, const int &N);
-  void sub(int index, const List &sublist);
+
+  List *sub(const List &indices);
 };

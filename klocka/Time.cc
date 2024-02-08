@@ -186,20 +186,20 @@ Time &Time::operator++()
 {
   // skulle vilja använda else if osv, men tror inte alla fall funkar då tex 02:59:59? , skulle bli 02:60:00 tror jag
   second++;
-  if (second > 59)
-  {
-    second = 0;
-    minute++;
-    if (minute > 59)
-    {
-      minute = 0;
-      hour++;
-      if (hour > 23)
-      {
-        hour = 0;
-      }
-    }
-  }
+  // if (second > 59)
+  // {
+  //   second = 0;
+  //   minute++;
+  //   if (minute > 59)
+  //   {
+  //     minute = 0;
+  //     hour++;
+  //     if (hour > 23)
+  //     {
+  //       hour = 0;
+  //     }
+  //   }
+  // }
   return *this;
 }
 

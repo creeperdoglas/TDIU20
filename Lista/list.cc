@@ -248,19 +248,35 @@ List::List_iterator List::insert(List_iterator position, const int &N)
   temp->prev = new_element;
   return List_iterator{new_element};
 }
-void List::sub(int index, const List &sublist)
+
+// Append an element to the end of the list.
+void List::append(int const N) const
 {
-  if (index < 0 || index > size())
-  {
-    throw out_of_range("Index out of range");
-  }
+  Element *new_element = new Element{N};
+  new_element->next = last;
+  new_element->prev = last->prev;
+  last->prev->next = new_element;
+  last->prev = new_element;
+}
 
-  auto it = begin();
-  ++it;
+// ...
 
-  for (const auto &element : sublist)
+List *List::sub(const List &indices)
+{
+  List *sublist = new List;
+  int prev_index = -1;
+  for (const auto &index : indices)
   {
-    it = insert(it, element);
-    ++it;
+    if (index < 0 || index >= size())
+    {
+      throw out_of_range("Index out of range");
+    }
+    if (index < prev_index)
+    {
+      throw invalid_argument("Indices not in ascending order");
+    }
+    sublist->List::append((*this)[index]); // istället för insert
+    prev_index = index;
   }
+  return sublist;
 }

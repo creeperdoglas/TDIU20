@@ -265,7 +265,7 @@ List *List::sub(const List &indices)
 {
   List *sublist = new List;
   int prev_index = -1;
-  for (const auto &index : indices)
+  for (int index : indices)
   {
     if (index < 0 || index >= size())
     {
@@ -275,8 +275,10 @@ List *List::sub(const List &indices)
     {
       throw invalid_argument("Indices not in ascending order");
     }
+
     sublist->List::append((*this)[index]); // istället för insert
     prev_index = index;
+    cout << "prev_index: " << prev_index << endl;
   }
   return sublist;
 }

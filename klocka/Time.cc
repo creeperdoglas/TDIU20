@@ -17,10 +17,16 @@
 //   Malte.Nilsson@liu.se
 
 // Komplettering: Upprepa inte strömmanipulatorer som gäller tills vidare.
+// KLART
+
 // Komplettering: stoi kastar ett eget undantag som inte ska läcka vidare till er användare.
+// KLART
+
 // Komplettering: Kodupprepning i stegningsoperatorerna.
+// KLART
 
 // Komplettering: operator string används inte och testas inte.
+// tog bort, KLART? kom fram till att det inte behövdes då jag redan har en to_string som gör allt jag behöver.
 
 // Komplettering: En testfil ska pröva de funktioner som
 //   ni har skapat. Det innebär att man vill pröva alla
@@ -45,6 +51,7 @@
 // funkar inte för t.ex
 // 	Time t{0, 0, 0};
 //	t = t - 129605;
+// KLART
 
 using namespace std;
 
@@ -72,10 +79,21 @@ Time::Time(string const &t) // const &t?
 {
   if (t.size() == 8 && t[2] == ':' && t[5] == ':')
   {
-    hour = stoi(t.substr(0, 2));   // börja på pos 0 och ta två chars, gör sedan om till int
-    minute = stoi(t.substr(3, 2)); // samma här
-    second = stoi(t.substr(6, 2)); // och här
+    try
+    {
 
+      hour = stoi(t.substr(0, 2));   // börja på pos 0 och ta två chars, gör sedan om till int
+      minute = stoi(t.substr(3, 2)); // samma här
+      second = stoi(t.substr(6, 2)); // och här
+    }
+    catch (const invalid_argument &)
+    {
+      throw invalid_argument{"invalid_input"};
+    }
+    catch (const out_of_range &)
+    {
+      throw invalid_argument{"invalid_input"};
+    }
     if (check_for_invalid_input(hour, minute, second))
     {
       throw invalid_argument{"invalid_input"};
@@ -117,8 +135,8 @@ string Time::to_string(const bool am_pm_format) const
   }
 
   ss << setw(2) << setfill('0') << display_hour;
-  ss << ':' << setw(2) << setfill('0') << minute;
-  ss << ':' << setw(2) << setfill('0') << second;
+  ss << ':' << setw(2) << minute;
+  ss << ':' << setw(2) << second;
 
   if (am_pm_format)
   {
@@ -169,6 +187,7 @@ Time Time::operator+(int const n) const
 
   // Konvertera tillbaka till timmar, minuter och sekunder
   int new_hour = total_seconds / 3600;
+  // total_seconds %= 3600; // för att ++ ska fungera
   int new_minute = (total_seconds % 3600) / 60;
   int new_second = total_seconds % 60;
 
@@ -184,39 +203,33 @@ Time Time::operator++(int)
 }
 Time &Time::operator++()
 {
-  // skulle vilja använda else if osv, men tror inte alla fall funkar då tex 02:59:59? , skulle bli 02:60:00 tror jag
-  second++;
-  // if (second > 59)
-  // {
-  //   second = 0;
-  //   minute++;
-  //   if (minute > 59)
-  //   {
-  //     minute = 0;
-  //     hour++;
-  //     if (hour > 23)
-  //     {
-  //       hour = 0;
-  //     }
-  //   }
-  // }
+  *this = *this + 1;
+  return *this;
+}
+Time &Time::operator+=(int const n)
+{
+  *this = *this + n;
   return *this;
 }
 
 Time Time::operator-(int const n) const
 {
-  // Konvertera tid till totala sekunder
+  // konvertera
   int total_seconds = hour * 3600 + minute * 60 + second;
 
-  // Subtrahera n sekunder
+  // subtrahera
   total_seconds -= n;
 
   // för överflöd
-  total_seconds = (total_seconds + 24 * 3600) % (24 * 3600);
+  if (total_seconds < 0)
+  {
+    total_seconds = (total_seconds % (24 * 3600) + (24 * 3600)) % (24 * 3600); //"wrap around" till förra dagen
+  }
 
   // Konvertera tillbaka till timmar, minuter och sekunder
   int new_hour = total_seconds / 3600;
-  int new_minute = (total_seconds % 3600) / 60;
+  total_seconds %= 3600; // behövs :/
+  int new_minute = total_seconds / 60;
   int new_second = total_seconds % 60;
 
   // Skapa och returnera
@@ -230,21 +243,12 @@ Time Time::operator--(int)
 }
 Time &Time::operator--()
 {
-  second--;
-  if (second < 0)
-  {
-    second = 59;
-    minute--;
-    if (minute < 0)
-    {
-      minute = 59;
-      hour--;
-      if (hour < 0)
-      {
-        hour = 23;
-      }
-    }
-  }
+  *this = *this - 1;
+  return *this;
+}
+Time &Time::operator-=(int const n)
+{
+  *this = *this - n;
   return *this;
 }
 bool Time::operator==(Time const &t) const
@@ -319,10 +323,10 @@ bool Time::operator>=(Time const &t) const
   }
 }
 
-Time::operator string() const
-{
-  return to_string();
-}
+// Time::operator string() const
+// {
+//   return to_string();
+// }
 
 int Time::get_hour() const
 {

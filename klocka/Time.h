@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 
-
 // Information om komplettering:
 //   Siffrorna hänvisar till rättningsprotokollet som finns på
 //   kurshemsidan -> läsning -> Literatur -> "Uppgruppens bedömningsprotokoll"
@@ -15,14 +14,14 @@
 //   Har ni frågor om kompletteringen kan ni maila mig på:
 //   Malte.Nilsson@liu.se
 
-
 // Komplettering: Interna medlemsfunktioner i den publika delen.
 // Kommentar: pragma once ingår inte i kursen och är kompilator "specefikt"
 
-
 // Komplettering (bonus): operator+ för kommutativa fallet saknas.
+
 // Saknar operatorer för Bonus
-// += och -= 
+// += och -=
+// KLART
 
 class Time
 {
@@ -38,15 +37,17 @@ public:
 
   bool is_am() const;
   std::string to_string(const bool = false) const; // till att byta mellan 24 och 12 timmars
-  operator std::string() const;                    // konvertera Time till sträng
+  // operator std::string() const;                    // konvertera Time till sträng
 
   Time operator+(int const n) const; // Lägger till N sekunder
   Time operator++(int);              // post increment
-  Time &operator++();                // efter läst på lite så har jag kommit fram till att det här behövs, detta är en "prefix verision" , fortarande lite osäker men testat fram och funkar
+  Time &operator++();
+  Time &operator+=(int const n);
 
   Time operator-(int const n) const; // tar bort sekunder
   Time operator--(int);              // post decrement
   Time &operator--();
+  Time &operator-=(int const n);
 
   // jämförelser
   bool operator==(Time const &t) const;

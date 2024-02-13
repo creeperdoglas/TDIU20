@@ -81,6 +81,7 @@ TEST_CASE("to_string")
    Time t3{13, 0, 0};
    Time t4{23, 59, 59};
    Time t5{5, 5, 5};
+   // additonal tests
    SECTION("24 hour format no argument")
    {
       CHECK(t0.to_string() == "00:00:00");
@@ -130,6 +131,17 @@ TEST_CASE("to_string")
       CHECK((t1++).to_string() == "12:00:00");
       CHECK((--t0).to_string() == "23:59:59");
       CHECK((t0--).to_string() == "23:59:59");
+      CHECK((t0).to_string() == "23:59:58");
+      CHECK((t0 += 129605).to_string() == "12:00:03");
+
+      Time t0("23:59:59");
+      CHECK((t0 = t0 - 129605).to_string() == "11:59:54");
+
+      CHECK((t1).to_string() == "12:00:01");
+      CHECK((t1 -= 129605).to_string() == "23:59:56");
+
+      Time t1{"12:00:00"};
+      CHECK((t1 = t1 + 129605).to_string() == "00:00:05");
    }
 }
 TEST_CASE("Output Stream Operator")

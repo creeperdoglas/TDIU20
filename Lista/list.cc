@@ -250,6 +250,7 @@ List::List_iterator List::insert(List_iterator position, const int &N)
 }
 
 // Append an element to the end of the list.
+// kan troligen ta bort, gjorde om sub så insert räcker
 void List::append(int const N) const
 {
   Element *new_element = new Element{N};
@@ -276,7 +277,7 @@ List *List::sub(const List &indices)
       throw invalid_argument("Indices not in ascending order");
     }
 
-    sublist->List::append((*this)[index]); // istället för insert
+    sublist->List::insert((*this)[index]); // istället för insert
     prev_index = index;
     cout << "prev_index: " << prev_index << endl;
   }

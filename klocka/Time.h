@@ -15,9 +15,12 @@
 //   Malte.Nilsson@liu.se
 
 // Komplettering: Interna medlemsfunktioner i den publika delen.
+// KLART, check for invalid input låg fel
+
 // Kommentar: pragma once ingår inte i kursen och är kompilator "specefikt"
 
 // Komplettering (bonus): operator+ för kommutativa fallet saknas.
+// KLART
 
 // Saknar operatorer för Bonus
 // += och -=
@@ -28,7 +31,6 @@ class Time
 public:
   Time() = default;
   Time(int const h, int const m, int const s);
-  bool check_for_invalid_input(int const h, int const m, int const s);
   Time(std::string const &t);
 
   int get_hour() const;
@@ -60,8 +62,10 @@ public:
 private:
   int hour{}, minute{}, second{};
   void format_into_ostream(int const n, std::ostream &os) const;
+  bool check_for_invalid_input(int const h, int const m, int const s);
 };
 // förstår inte riktigt varför man inte får använda friend (skulle då kunna lägga in klassen) Antar att det är dålig praxis då man inte vill att sådant i public ska komma åt sådant i private?
 //// Det stämmer
 std::ostream &operator<<(std::ostream &os, const Time &t);
 std::istream &operator>>(std::istream &is, Time &t);
+Time operator+(int n, const Time &t); // för kommuntativa fallet

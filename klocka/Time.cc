@@ -4,6 +4,7 @@
 #include <stdexcept> //för throw invalid_argument
 #include <iomanip>   // för std::setw and std::setfill
 #include <sstream>
+#include <limits>
 #include "Time.h"
 
 // Information om komplettering:
@@ -27,6 +28,7 @@
 
 // Komplettering: operator string används inte och testas inte.
 // tog bort, KLART? kom fram till att det inte behövdes då jag redan har en to_string som gör allt jag behöver.
+// exempel på testfall skulle vara  CHECK( string(Time{2,4,1}) == "02:04:01" );
 
 // Komplettering: En testfil ska pröva de funktioner som
 //   ni har skapat. Det innebär att man vill pröva alla
@@ -34,6 +36,7 @@
 //   på att vi har en funktion som fungerar. En bra fråga är:
 //   "Övertygar detta den som rättar att er funktion
 //   fungerar utan att kolla i Time.cc-filen?"
+// KLART, gjort om i stort sett varenda testfall och lagt till massvis mer :D
 
 // Kommentar: skriv datamedlemsinitieringslistan på egen rad
 // Kommentar/Tips: Om det enda som returneras i en if-sats
@@ -194,6 +197,10 @@ Time Time::operator+(int const n) const
   // Skapa och returnera
   return Time(new_hour, new_minute, new_second);
 }
+Time operator+(int n, const Time &t)
+{
+  return t + n;
+}
 Time Time::operator++(int)
 {
   // skapar en kopia och returnerar
@@ -352,8 +359,8 @@ ostream &operator<<(ostream &os, Time const &t)
 istream &operator>>(istream &is, Time &t)
 {
   int h, m, s;
-  char c1, c2;
-  is >> h >> c1 >> m >> c2 >> s;
+  char c;
+  is >> h >> c >> m >> c >> s;
 
   // Skapa ett nytt objekt för validering och tilldelning, försökte använda en if sats förut med check_for_invalid input, funkade ej (antar då private?), så gjorde om såhär
   try
@@ -365,6 +372,5 @@ istream &operator>>(istream &is, Time &t)
   {
     is.setstate(ios::failbit); // Ange felstatus vid ogiltig inmatning
   }
-
   return is;
 }

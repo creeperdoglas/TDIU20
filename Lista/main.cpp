@@ -5,8 +5,8 @@ int main()
 {
   try
   {
-    List list{0, 1, 2, 3, 4, 5};         // Initialize the list with some values
-    List *subList = list.sub({2, 1, 2}); // This should throw an exception
+    List list{0, 1, 2, 3, 4, 5};               // Initialize the list with some values
+    List *subList = list.sub({1, 2, 1, 2, 0}); // This should throw an exception
 
     // If the above line does not throw an exception, the following lines will execute
     std::cout << "Sublist created successfully. This was not expected." << std::endl;

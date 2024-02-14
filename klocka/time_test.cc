@@ -111,51 +111,176 @@ TEST_CASE("to_string")
       CHECK(t4.to_string(true) == "11:59:59 PM");
       CHECK(t5.to_string(true) == "05:05:05 AM");
    }
+}
+TEST_CASE("Operator +")
+{
+   Time t1{11, 59, 59};
+   CHECK((t1 + 1).to_string() == "12:00:00");
+   CHECK((t1 + 129605).to_string() == "00:00:04");
+   CHECK((t1 = t1 + 129605).to_string() == "00:00:04");
+   // kommunativa fallet längre ned
+}
+TEST_CASE("Operator +=")
+{
+   Time t1{11, 59, 59};
+   CHECK((t1 += 1).to_string() == "12:00:00");
+   CHECK((t1 += 129605).to_string() == "00:00:05");
+}
+TEST_CASE("Operator ++")
+{
+   Time t0{0, 0, 0};
+   Time t1{0, 1, 0};
+   t1 = t0++;
+   CHECK((t0).to_string() == "00:00:01");
+   CHECK((t1).to_string() == "00:00:00");
+}
+TEST_CASE("++ operator")
+{
+   Time t0{0, 0, 0};
+   Time t1{0, 1, 0};
+   t1 = ++t0;
+   CHECK((t0).to_string() == "00:00:01");
+   CHECK((t1).to_string() == "00:00:01");
+}
 
-   SECTION("Operators")
+TEST_CASE("Operator - ")
+{
+   Time t1{11, 59, 59};
+   CHECK((t1 - 1).to_string() == "11:59:58");
+   CHECK((t1 - -1).to_string() == "12:00:00");
+   CHECK((t1 = t1 - 129605).to_string() == "23:59:54");
+}
+TEST_CASE("Operator -= ")
+{
+   Time t1{12, 0, 1};
+   CHECK((t1 -= 129605).to_string() == "23:59:56");
+}
+TEST_CASE("operator --")
+{
+   Time t0{0, 0, 0};
+   Time t1{0, 1, 0};
+   t1 = t0--;
+   CHECK(t0.to_string() == "23:59:59");
+   CHECK(t1.to_string() == "00:00:00");
+}
+
+TEST_CASE("-- operator")
+{
+   Time t0{0, 0, 0};
+   Time t1{0, 1, 0};
+   t1 = --t0;
+   CHECK(t0.to_string() == "23:59:59");
+   CHECK(t1.to_string() == "23:59:59");
+}
+TEST_CASE(" Boolean operators")
+{
+   SECTION("1")
    {
-      CHECK((t0 + 1).to_string() == "00:00:01");
-      CHECK((t1 - 1).to_string() == "11:59:58");
-      CHECK((t1 + -1).to_string() == "11:59:58");
-      CHECK((t1 - -1).to_string() == "12:00:00");
-      CHECK((t1 + 60).to_string() == "12:00:59");
-      CHECK((t0 + 3600).to_string() == "01:00:00");
+      Time t1{0, 0, 0};
+      Time t2{23, 59, 59};
+      Time t3 = t2;
 
-      CHECK((t1 > t0) == true);
-      CHECK((t1 < t0) == false);
-      CHECK((t0 == t0) == true);
-      CHECK((t1 != t1) == false);
-      CHECK((t0 >= t1) == false);
-      CHECK((t0 >= t0) == true);
-      CHECK((++t1).to_string() == "12:00:00");
-      CHECK((t1++).to_string() == "12:00:00");
-      CHECK((--t0).to_string() == "23:59:59");
-      CHECK((t0--).to_string() == "23:59:59");
-      CHECK((t0).to_string() == "23:59:58");
-      CHECK((t0 += 129605).to_string() == "12:00:03");
+      CHECK(t1 < t2);
+      CHECK(t2 > t1);
+      CHECK_FALSE(t2 > t3);
+      CHECK_FALSE(t2 < t3);
+      CHECK(t2 == t3);
+      CHECK(t2 != t1);
+      CHECK(t1 <= t2);
+      CHECK(t2 >= t1);
+      CHECK(t2 <= t3);
+      CHECK(t2 >= t3);
+   }
 
-      Time t0("23:59:59");
-      CHECK((t0 = t0 - 129605).to_string() == "11:59:54");
+   SECTION("2")
+   {
+      Time t1{0, 0, 0};
+      Time t2{0, 0, 2};
+      Time t3 = t2;
 
-      CHECK((t1).to_string() == "12:00:01");
-      CHECK((t1 -= 129605).to_string() == "23:59:56");
+      CHECK(t1 < t2);
+      CHECK(t2 > t1);
+      CHECK_FALSE(t2 > t3);
+      CHECK_FALSE(t2 < t3);
+      CHECK(t2 == t3);
+      CHECK(t2 != t1);
+      CHECK(t1 <= t2);
+      CHECK(t2 >= t1);
+      CHECK(t2 <= t3);
+      CHECK(t2 >= t3);
+   }
 
-      Time t1{"12:00:00"};
-      CHECK((t1 = t1 + 129605).to_string() == "00:00:05");
+   SECTION("3")
+   {
+      Time t1{0, 0, 0};
+      Time t2{0, 1, 0};
+      Time t3 = t2;
+
+      CHECK(t1 < t2);
+      CHECK(t2 > t1);
+      CHECK_FALSE(t2 > t3);
+      CHECK_FALSE(t2 < t3);
+      CHECK(t2 == t3);
+      CHECK(t2 != t1);
+      CHECK(t1 <= t2);
+      CHECK(t2 >= t1);
+      CHECK(t2 <= t3);
+      CHECK(t2 >= t3);
+   }
+
+   SECTION("4")
+   {
+      Time t1{0, 0, 0};
+      Time t2{1, 0, 0};
+      Time t3 = t2;
+
+      CHECK(t1 < t2);
+      CHECK(t2 > t1);
+      CHECK_FALSE(t2 > t3);
+      CHECK_FALSE(t2 < t3);
+      CHECK(t2 == t3);
+      CHECK(t2 != t1);
+      CHECK(t1 <= t2);
+      CHECK(t2 >= t1);
+      CHECK(t2 <= t3);
+      CHECK(t2 >= t3);
    }
 }
+
 TEST_CASE("Output Stream Operator")
 {
-   Time t(10, 20, 30);
-   std::stringstream ss;
-   ss << t;
+
+   stringstream ss;
+   ss << Time{10, 20, 30};
    CHECK(ss.str() == "10:20:30");
 }
 
 TEST_CASE("Input Stream Operator")
 {
-   std::stringstream ss("11:22:33");
-   Time t;
+   stringstream ss;
+   Time t{};
+   ss << "11:22:33";
+   CHECK(ss.eof() == false);
    ss >> t;
    CHECK(t.to_string() == "11:22:33");
+   CHECK(ss.eof());
+
+   SECTION("Failbit")
+   {
+      stringstream ss("11:22:33");
+      Time t2;
+      ss >> t2;
+      CHECK_FALSE(ss.fail());
+      Time t3{};
+      ss << "25:23:23";
+      ss >> t3;
+      CHECK(ss.fail());
+   }
+}
+
+TEST_CASE("commutative")
+{
+   Time t1(10, 20, 30);
+   CHECK((3600 + t1).to_string() == "11:20:30");
+   CHECK((129605 + t1).to_string() == "22:20:35");
 }

@@ -245,8 +245,8 @@ TEST_CASE("Sublist")
 {
   stringstream ss{};
   List list{5, 6, 7, 8, 9};
-  List *sub_list{list.sub({0, 1, 1, 1, 1})};
-  ss << *sub_list;
+  List sub_list{list.sub({0, 1, 1, 1, 1})};
+  ss << sub_list;
   CHECK(ss.str() == "5 6 6 6 6");
   SECTION("More")
   {
@@ -254,8 +254,8 @@ TEST_CASE("Sublist")
     stringstream ss{};
 
     List list{1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
-    List *sub_list{list.sub({0, 2, 3, 4, 6, 10})}; // [1, 2, 3, 5, 13, 89]
-    ss << *sub_list;
+    List sub_list{list.sub({0, 2, 3, 4, 6, 10})}; // [1, 2, 3, 5, 13, 89]
+    ss << sub_list;
     CHECK(ss.str() == "1 2 3 5 13 89");
   }
   SECTION("Exception")

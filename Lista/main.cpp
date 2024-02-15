@@ -4,22 +4,21 @@
 
 int main()
 {
+  List list{1, 2, 3, 4, 5, 6};
 
-  List list{1, 2, 3, 4, 5};
+  // list.setSortOnInsert(false);
 
   // Test case: Check if providing invalid indices throws an exception
   try
   {
-    List *subList = list.sub({2, 1, 2});
-    std::cout << "Sublist created successfully. This was not expected." << std::endl;
+    List sublist{list.sub({2, 1, 2})};
+    std::cout << "Sublist created) successfully. This was not expected." << std::endl;
 
-    for (auto it = subList->begin(); it != subList->end(); ++it)
+    for (auto it = sublist.begin(); it != sublist.end(); ++it)
     {
       std::cout << *it << " ";
     }
     std::cout << std::endl;
-
-    delete subList;
   }
   catch (const std::exception &e)
   {

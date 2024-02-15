@@ -21,15 +21,11 @@ private:
     int value;
   };
   Element *first, *last;
-  bool sortOnInsert = true;
 
 public:
   List();
-  List(bool sortOnInsert);
-
   ~List();
   List(std::initializer_list<int> const &data);
-  void reinitialize(bool sortOnInsert, std::initializer_list<int> const &data = {});
   List(List const &L);
   List(List &&L);
 
@@ -37,10 +33,10 @@ public:
   List &operator=(List &&L);
 
   int &operator[](int const index) const;
-  void insert(int const N);
+  void insert(int const N) const;
   void remove(int const N) const;
   int size() const;
-  void append(int const N);
+  void append(int const N) const;
   friend std::ostream &operator<<(std::ostream &os, List const &L);
 
   class List_iterator
@@ -61,9 +57,5 @@ public:
   List_iterator begin() const;
   List_iterator end() const;
   List_iterator insert(List_iterator position, const int &N);
-<<<<<<< HEAD
-  List *sub(const List &indices);
-=======
   List sub(std::initializer_list<int> indices);
->>>>>>> 8c6831d87ed4969c7d5ab888e0aa150d3ebe7497
 };

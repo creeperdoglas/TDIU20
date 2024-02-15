@@ -263,12 +263,8 @@ TEST_CASE("Sublist")
     stringstream ss{};
     stringstream ss2{};
     List list{0, 1, 2, 3};
-    CHECK_THROWS(list.sub({2, 1, 2}));
     CHECK_THROWS(list.sub({-1, 5}));
-
-    // List indices2{2, 2, 2};
-    // ss << *list.sub(indices2);
-    // CHECK(ss.str() == "2 2 2");
+    CHECK_THROWS(list.sub({2, 1, 2}));
   }
 }
 // fixa sublist och lägga till test för det

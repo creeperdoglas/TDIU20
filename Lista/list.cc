@@ -7,10 +7,15 @@ using namespace std;
 // standradkonstruktor
 List::List()
 {
+  sortOnInsert = true;
   last = new Element{};
   first = new Element{};
   last->prev = first;
   first->next = last;
+}
+List::List(bool sortOnInsert) : List()
+{
+  this->sortOnInsert = sortOnInsert;
 }
 // Rensar upp alla allokerade element i listan för att undvika minnesläckage.
 List::~List()
@@ -30,21 +35,48 @@ List::~List()
 // Konstruktor som tar en initializer_list som argument och skapar en lista med elementen i listan.
 List::List(initializer_list<int> const &data)
 {
+  // sortOnInsert = sortNow;
   last = new Element{};
   first = new Element{};
   last->prev = first;
   first->next = last;
-  for (auto &i : data)
+  for (const auto &i : data)
   {
-    insert(i);
+    if (!sortOnInsert)
+    {
+      append(i);
+    }
+    else
+    {
+      insert(i);
+    }
   }
-  // äldre kod, vill testa den innan, tar mindre minne
-  // vector<int> vector_data{data};
-  // for (unsigned int i{}; i < vector_data.size(); i++)
-  // {
-  //   insert(vector_data[i]);
-  // }
 }
+// dåligt försök under, blev desperat, men problemet är att insert körs innan så allt som kommer hända att det initieras med redan sorted
+//  void List::reinitialize(bool sortOnInsert, std::initializer_list<int> const &data)
+//  {
+//    this->sortOnInsert = sortOnInsert;
+//    // Clear existing list
+//    while (first->next != last)
+//    {
+//      Element *temp = first->next;
+//      first->next = temp->next;
+//      delete temp;
+//    }
+//    // Optionally re-populate list
+//    for (auto val : data)
+//    {
+//      this->append(val); // or insert based on sortOnInsert
+//    }
+//  }
+
+// äldre kod, vill testa den innan, tar mindre minne
+// vector<int> vector_data{data};
+// for (unsigned int i{}; i < vector_data.size(); i++)
+// {
+//   insert(vector_data[i]);
+// }
+
 // Kopieringskonstruktor
 List::List(List const &L)
 {
@@ -121,7 +153,7 @@ int &List::operator[](int const index) const
   return temp->value;
 }
 // Lägger till ett element i listan (insert).
-void List::insert(int const N) const
+void List::insert(int const N)
 {
   Element *temp{first->next};
   Element *new_element{new Element{N}};
@@ -236,6 +268,7 @@ int &List::List_iterator::operator*() const
 }
 List::List_iterator List::insert(List_iterator position, const int &N)
 {
+
   Element *temp = position.pos;
   Element *new_element = new Element{N};
   while (temp != last && temp->value <= N)
@@ -248,9 +281,8 @@ List::List_iterator List::insert(List_iterator position, const int &N)
   temp->prev = new_element;
   return List_iterator{new_element};
 }
-
-// Append an element to the end of the list.
-void List::append(int const N) const
+// hoppas han/hon som gjorde så att man endast ska kunna använda  >= index fick mig att få klinisk depression :/
+void List::append(int const N)
 {
   Element *new_element = new Element{N};
   new_element->next = last;
@@ -259,13 +291,12 @@ void List::append(int const N) const
   last->prev = new_element;
 }
 
-// ...
-
 List *List::sub(const List &indices)
 {
-  List *sublist = new List;
+  List *sublist = new List(false);
+  // sublist->reinitialize(false); gjorde inget, iallfall inte det jag hade hoppats
   int prev_index = -1;
-  for (const auto &index : indices)
+  for (int index : indices)
   {
     if (index < 0 || index >= size())
     {
@@ -275,7 +306,8 @@ List *List::sub(const List &indices)
     {
       throw invalid_argument("Indices not in ascending order");
     }
-    sublist->List::append((*this)[index]); // istället för insert
+
+    sublist->append((*this)[index]); // istället för insert
     prev_index = index;
   }
   return sublist;

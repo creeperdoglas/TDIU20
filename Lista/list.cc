@@ -291,10 +291,17 @@ void List::append(int const N)
   last->prev = new_element;
 }
 
+<<<<<<< HEAD
 List *List::sub(const List &indices)
 {
   List *sublist = new List(false);
   // sublist->reinitialize(false); gjorde inget, iallfall inte det jag hade hoppats
+=======
+// ...
+List List::sub(std::initializer_list<int> indices)
+{
+  List sublist;
+>>>>>>> 8c6831d87ed4969c7d5ab888e0aa150d3ebe7497
   int prev_index = -1;
   for (int index : indices)
   {
@@ -306,8 +313,12 @@ List *List::sub(const List &indices)
     {
       throw invalid_argument("Indices not in ascending order");
     }
+<<<<<<< HEAD
 
     sublist->append((*this)[index]); // istället för insert
+=======
+    sublist.append((*this)[index]); // istället för insert
+>>>>>>> 8c6831d87ed4969c7d5ab888e0aa150d3ebe7497
     prev_index = index;
   }
   return sublist;

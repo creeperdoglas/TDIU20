@@ -1,5 +1,6 @@
 #include "List.h"
 #include <iostream>
+<<<<<<< HEAD
 
 int main()
 {
@@ -25,6 +26,32 @@ int main()
   catch (const std::exception &e)
   {
     std::cout << "Caught an unexpected exception: " << e.what() << std::endl;
+=======
+#include <exception>
+
+int main()
+{
+  List list{1, 2, 3, 4, 5, 6};
+
+  // list.setSortOnInsert(false);
+
+  // Test case: Check if providing invalid indices throws an exception
+  try
+  {
+    List sublist{list.sub({2, 1, 2})};
+    std::cout << "Sublist created) successfully. This was not expected." << std::endl;
+
+    for (auto it = sublist.begin(); it != sublist.end(); ++it)
+    {
+      std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+  }
+  catch (const std::exception &e)
+  {
+
+    std::cout << "Exception caught as expected: " << e.what() << std::endl;
+>>>>>>> 8c6831d87ed4969c7d5ab888e0aa150d3ebe7497
   }
 
   return 0;

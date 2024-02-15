@@ -61,5 +61,9 @@ public:
   List_iterator begin() const;
   List_iterator end() const;
   List_iterator insert(List_iterator position, const int &N);
+<<<<<<< HEAD
   List *sub(const List &indices);
+=======
+  List sub(std::initializer_list<int> indices);
+>>>>>>> 8c6831d87ed4969c7d5ab888e0aa150d3ebe7497
 };

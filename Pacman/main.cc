@@ -1,4 +1,5 @@
 #include "ghost.h"
+#include "given.h "
 #include <string>
 #include <iostream>
 #include <iomanip>

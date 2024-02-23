@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "game.h" 
+#include "game.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ int main()
     cout << "Välkommen till Pacman\nTryck 'Enter' för att starta";
     cin.get();
 
-    Game game {};
+    Game game{};
     game.run();
 
     cout << "Du fick " << game.get_score() << " poäng" << std::endl;

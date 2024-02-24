@@ -1,59 +1,53 @@
 #include "ghost.h"
-#include "SFML/Graphics.hpp" //för colour
+#include "entity.h"          //kanske ta bort, låter vara kvar så länge, gör ändå ingen skillnad pga pragma once
+#include "SFML/Graphics.hpp" //för color
+using namespace std;
 
-sf::Color stringToColor(const std::string &color)
+sf::Color get_color(const string &color)
 {
   if (color == "red")
     return sf::Color::Red;
-  // lägg till fler sen
-  return sf::Color::White; // Default
+  else if (color == "pink")
+    return sf::Color::Magenta;
+  else if (color == "orange")
+    return sf::Color(255, 165, 0); // Orange , fanns ej orange i sfml. Hoppas detta funkar
+  return sf::Color::White;         // Default
 }
 
-Ghost::Ghost(sf::Vector2f const &start_position, Grid &grid, int speed, sf::Color const &color)
-    : Entity(start_position, grid, speed, color)
+Ghost::Ghost(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
+    : Entity(start_position, grid, speed, get_color(color)), // Now correctly converts string to sf::Color
+      pacman(pacman),
+      scatter_position(scatter_position)
 {
-  // Ghost class constructor body
+  // Constructor body
 }
 
-std::string Ghost::get_color() const
+// Blinky constructor
+Blinky::Blinky(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
+    : Ghost(pacman, start_position, grid, 100, "red", scatter_position)
 {
-  return color;
+  // Blinky-specific initialization
 }
-
-void Ghost::set_position(Point const &position)
-{
-  this->position = position;
-}
-
-Point Ghost::get_position() const
-{
-  return position;
-}
-
-// Blinky implementation
-Blinky::Blinky(sf::Vector2f const &start_position, Grid &grid)
-    : Ghost(start_position, grid, 100 /* example speed */, stringToColor("red")) {}
-{
-}
-
-Point Blinky::get_chase_point() const
-{
-  // Implement chase logic specific to Blinky
-}
-
 Point Blinky::get_scatter_point() const
 {
-  // Implement scatter logic specific to Blinky
+  if (angry)
+  {
+    return pacman.get_position();
+  }
+  else
+  {
+    return Point{6, 6}; // vet inte om detta är bra då inte kommer funka om annorlunda plan
+                        //  men int grid_width = grid.rows[0].size(); int grid_height = grid.rows.size(); . där  rows är inaccessible och har ingen blekaste om jag får ändra grid filen :/
+  }
 }
 
-bool Blinky::is_angry() const
+void Blinky::set_angry(bool state)
 {
-  return angry;
+  angry = state;
 }
 
-void Blinky::set_angry(bool angry)
+void Blinky::chase()
+
 {
-  this->angry = angry;
+  return pacman.get_position();
 }
-
-// Implementations for Pinky and Clyde follow a similar pattern

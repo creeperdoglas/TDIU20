@@ -1,4 +1,5 @@
-#include "ghost.h"
+#include "full_game/YOUR_CODE_HERE/ghost.h"
+// #include "SFML/Graphics.hpp"
 #include "given.h "
 #include <string>
 #include <iostream>
@@ -25,6 +26,7 @@ public:
   Ghost_Tester()
       : pacman{}
   {
+    blinky = new Blinky(pacman, sf::Vector2f(100, 100), grid, 100, "red", Point(6, 6));
   }
 
   void run()
@@ -40,7 +42,10 @@ public:
 
       string command{};
       iss >> command;
-
+      if (command == "chase")
+      {
+        blinky->chase();
+      }
       if (command == "pos")
       {
         Point new_pos{};
@@ -73,6 +78,9 @@ private:
 
     return to_draw;
   }
+  // Pacman pacman;
+  Blinky *blinky;
+  Grid grid;
 
   /*
     En hjälpfunktion för att rita ut spelplanen för testprogrammet.

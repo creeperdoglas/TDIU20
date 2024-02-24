@@ -1,8 +1,7 @@
 #ifndef GHOST_H
 #define GHOST_H
 
-#include "entity.h"
-#include "pacman.h"
+// #include "entity.h"
 #include <string>
 
 class Ghost : public Entity
@@ -32,4 +31,4 @@ private:
   bool angry = false;
 };
 
-#endif // GHOST_H
+#endif

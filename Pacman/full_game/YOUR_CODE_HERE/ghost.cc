@@ -1,6 +1,7 @@
 #include "ghost.h"
-#include "entity.h"          //kanske ta bort, låter vara kvar så länge, gör ändå ingen skillnad pga pragma once
-#include "SFML/Graphics.hpp" //för color
+// #include "entity.h"          //kanske ta bort, låter vara kvar så länge, gör ändå ingen skillnad pga pragma once
+#include "Code/pacman.h"
+#include "SFML/Graphics.hpp" //för sf::color
 using namespace std;
 
 sf::Color get_color(const string &color)
@@ -52,3 +53,5 @@ Point Blinky::chase()
 {
   return pacman.get_position();
 }
+
+// Clyde constructor

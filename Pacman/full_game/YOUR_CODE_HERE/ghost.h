@@ -12,7 +12,7 @@ public:
   virtual ~Ghost() = default;
 
   virtual Point get_scatter_point() const = 0; // virtual behövs för att kunna override en base class funktion, detta gör så att blinky exempelvis kan ha en egen scatter_point och de andra en annan. korrekt?
-  virtual void chase() = 0;
+  virtual Point chase() = 0;
 
 protected:
   Pacman &pacman;
@@ -26,7 +26,7 @@ public:
   Point get_scatter_point() const override;
   bool is_angry() const { return angry; }
   void set_angry(bool state) { angry = state; }
-  void chase() override;
+  Point chase() override;
 
 private:
   bool angry = false;

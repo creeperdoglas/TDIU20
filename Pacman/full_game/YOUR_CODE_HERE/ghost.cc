@@ -15,7 +15,7 @@ sf::Color get_color(const string &color)
 }
 
 Ghost::Ghost(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
-    : Entity(start_position, grid, speed, get_color(color)), // Now correctly converts string to sf::Color
+    : Entity(start_position, grid, speed, get_color(color)), // borde nu korrekt konvertera string till sf::Color
       pacman(pacman),
       scatter_position(scatter_position)
 {
@@ -40,14 +40,15 @@ Point Blinky::get_scatter_point() const
                         //  men int grid_width = grid.rows[0].size(); int grid_height = grid.rows.size(); . där  rows är inaccessible och har ingen blekaste om jag får ändra grid filen :/
   }
 }
-
+// self explanatory
 void Blinky::set_angry(bool state)
 {
   angry = state;
 }
-
-void Blinky::chase()
-
+/*
+returnerar en "Point" som blinky ska jaga.
+*/
+Point Blinky::chase()
 {
   return pacman.get_position();
 }

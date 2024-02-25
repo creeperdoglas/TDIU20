@@ -1,26 +1,35 @@
 #include "ghost.h"
-// #include "entity.h"          //kanske ta bort, låter vara kvar så länge, gör ändå ingen skillnad pga pragma once
-#include "Code/pacman.h"
-#include "SFML/Graphics.hpp" //för sf::color
+#include "Sfml/Graphics.hpp"
+// #include "given.h" //för basic testfall
 using namespace std;
+// kollade spec-sheeten behövs ej, bara en get color behövs :DDDD
+//  sf::Color Ghost::get_sfml_color(const std::string &colorName)
+//  {
+//    if (colorName == "red")
+//      return sf::Color::Red;
+//    else if (colorName == "pink")
+//      return sf::Color::Magenta; // Assuming pink maps to sf::Color::Magenta
+//    else if (colorName == "orange")
+//      return sf::Color(255, 165, 0); // Custom color, as SFML does not have a predefined orange
+//    else
+//      return sf::Color::White; // Default color
+//  }
 
-sf::Color get_color(const string &color)
+Ghost::Ghost(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
+    : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
 {
-  if (color == "red")
-    return sf::Color::Red;
-  else if (color == "pink")
-    return sf::Color::Magenta;
-  else if (color == "orange")
-    return sf::Color(255, 165, 0); // Orange , fanns ej orange i sfml. Hoppas detta funkar
-  return sf::Color::White;         // Default
+  // Your constructor implementation
 }
 
-Ghost::Ghost(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
-    : Entity(start_position, grid, speed, get_color(color)), // borde nu korrekt konvertera string till sf::Color
-      pacman(pacman),
-      scatter_position(scatter_position)
+void Ghost::set_position(const Point &new_position)
 {
-  // Constructor body
+  position.x = static_cast<float>(new_position.x);
+  position.y = static_cast<float>(new_position.y);
+}
+
+Point Ghost::get_position() const
+{
+  return Point{static_cast<int>(position.x), static_cast<int>(position.y)};
 }
 
 // Blinky constructor
@@ -41,6 +50,25 @@ Point Blinky::get_scatter_point() const
                         //  men int grid_width = grid.rows[0].size(); int grid_height = grid.rows.size(); . där  rows är inaccessible och har ingen blekaste om jag får ändra grid filen :/
   }
 }
+void Blinky::select_new_target(sf::Vector2f &current_target, sf::Vector2i &next_target) const
+{
+  if (angry)
+  {
+    // Direct chase: Target is Pacman's current position
+    Point pacmanPosition = pacman.get_position();
+    next_target = sf::Vector2i(pacmanPosition.x, pacmanPosition.y);
+  }
+  else
+  {
+    // Scatter mode: Target is a fixed point, e.g., (6, 6)
+    next_target = sf::Vector2i(6, 6);
+  }
+}
+bool Blinky::is_angry() const
+{
+  return angry; // Return the angry state
+}
+
 // self explanatory
 void Blinky::set_angry(bool state)
 {
@@ -52,6 +80,10 @@ returnerar en "Point" som blinky ska jaga.
 Point Blinky::chase()
 {
   return pacman.get_position();
+}
+string Blinky::get_color() const
+{
+  return "red";
 }
 
 // Clyde constructor

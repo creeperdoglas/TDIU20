@@ -6,7 +6,8 @@
 #include <iomanip>
 #include <sstream>
 // för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman" -I"C:/SFML-2.6.1/include" -L"C:/SFML-2.6.1/lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-// kom ihåg att skapa en bin (mkdir bin) då ej bin ligger i git, nvm lade till
+// förstår intr varför min launch.json och tasks.json + cpp.properties löser det åt mig men aja
+// kom ihåg att skapa en bin (mkdir bin) då ej bin ligger i git
 using namespace std;
 
 /*
@@ -28,7 +29,7 @@ public:
   Ghost_Tester()
       : pacman{}
   {
-    ghosts["blinky"] = new Blinky(pacman, sf::Vector2f(100, 100), grid, 100, "red", Point{6, 6}); // kanske ta bort efter med för att förhindra minnes läcka, o andra sidan är det här int "main programmet"
+    ghosts["blinky"] = new Blinky(pacman, Point{10, 10}, grid, 100, "red", Point{6, 6});
   }
 
   void run()
@@ -87,9 +88,8 @@ private:
       {
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
-      Point next_target;
-      ghost->select_new_target;
-      if (next_target == curr_pos)
+
+      if (ghost->get_target_position() == curr_pos)
       {
 
         to_draw[0] = tolower(ghost->get_color()[0]);

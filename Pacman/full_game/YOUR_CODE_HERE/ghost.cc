@@ -1,6 +1,8 @@
 #include "ghost.h"
-#include "Sfml/Graphics.hpp"
+// #include "Sfml/Graphics.hpp"
 // #include "given.h" //för basic testfall
+// stort sett gjort om varenda klass så de ej använder SMFL, min förståelse är att main och given inte använder SMFL och därför bör detta programmet ej heller göra det
+// tog mig bara runt 15 timmar att förstå det :(, men har iallafall bra förståelse över SMFL nu :/
 using namespace std;
 // kollade spec-sheeten behövs ej, bara en get color behövs :DDDD
 //  sf::Color Ghost::get_sfml_color(const std::string &colorName)
@@ -15,10 +17,10 @@ using namespace std;
 //      return sf::Color::White; // Default color
 //  }
 
-Ghost::Ghost(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
+Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
 {
-  // Your constructor implementation
+  // constructor implementation
 }
 
 void Ghost::set_position(const Point &new_position)
@@ -26,14 +28,17 @@ void Ghost::set_position(const Point &new_position)
   position.x = static_cast<float>(new_position.x);
   position.y = static_cast<float>(new_position.y);
 }
-
+Point Ghost::get_target_position() const
+{
+  return Point{lastTargetPosition.x, lastTargetPosition.y};
+}
 Point Ghost::get_position() const
 {
   return Point{static_cast<int>(position.x), static_cast<int>(position.y)};
 }
 
 // Blinky constructor
-Blinky::Blinky(Pacman &pacman, sf::Vector2f const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
+Blinky::Blinky(Pacman &pacman, Point const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
     : Ghost(pacman, start_position, grid, 100, "red", scatter_position)
 {
   // Blinky-specific initialization
@@ -50,19 +55,20 @@ Point Blinky::get_scatter_point() const
                         //  men int grid_width = grid.rows[0].size(); int grid_height = grid.rows.size(); . där  rows är inaccessible och har ingen blekaste om jag får ändra grid filen :/
   }
 }
-void Blinky::select_new_target(sf::Vector2f &current_target, sf::Vector2i &next_target) const
+void Blinky::select_new_target(Point &current_target, Point &next_target)
 {
   if (angry)
   {
     // Direct chase: Target is Pacman's current position
     Point pacmanPosition = pacman.get_position();
-    next_target = sf::Vector2i(pacmanPosition.x, pacmanPosition.y);
+    next_target = Point{pacmanPosition.x, pacmanPosition.y};
   }
   else
   {
     // Scatter mode: Target is a fixed point, e.g., (6, 6)
-    next_target = sf::Vector2i(6, 6);
+    next_target = Point{6, 6};
   }
+  lastTargetPosition = next_target;
 }
 bool Blinky::is_angry() const
 {

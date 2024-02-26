@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <map>
 // för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman" -I"C:/SFML-2.6.1/include" -L"C:/SFML-2.6.1/lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 // förstår intr varför min launch.json och tasks.json + cpp.properties löser det åt mig men aja
 // kom ihåg att skapa en bin (mkdir bin) då ej bin ligger i git
@@ -25,11 +26,11 @@ class Ghost_Tester
 {
 
 public:
-  std::map<std::string, Ghost *> ghosts;
+  std::map<string, Ghost *> ghosts;
   Ghost_Tester()
       : pacman{}
   {
-    ghosts["blinky"] = new Blinky(pacman, Point{10, 10}, grid, 100, "red", Point{6, 6});
+    ghosts["blinky"] = new Blinky(pacman, Point{3, 3}, grid, 100, "red", Point{6, 6});
   }
 
   void run()

@@ -40,6 +40,8 @@ public:
   {
     while (true)
     {
+      Point next_target;
+      ghost->select_new_target(); // fixa på pc hemma.
       draw_map();
       cout << "> ";
 
@@ -85,10 +87,10 @@ private:
     }
 
     // Draw Ghosts
-    if (blinky->get_position() == curr_pos)
-    {
-      to_draw[0] = 'B';
-    }
+    // if (blinky->get_position() == curr_pos)
+    // {
+    //   to_draw[0] = 'B';
+    // }
     for (const auto &pair : ghosts)
     {
       auto ghost = pair.second;
@@ -97,7 +99,7 @@ private:
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
       // Point next_target;
-      // ghost->select_new_target;
+      // ghost->select_new_target();
       if (ghost->get_target_position() == curr_pos)
       {
         to_draw[0] = tolower(ghost->get_color()[0]);

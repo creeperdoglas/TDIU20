@@ -6,7 +6,10 @@
 #include <iomanip>
 #include <sstream>
 #include <map>
-// för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman" -I"C:/SFML-2.6.1/include" -L"C:/SFML-2.6.1/lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+// för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman"
+// på laptopen, byt ut Melker Gustafsson mot boren
+// Lägg till det under ifall smfl
+//-I"C:/SFML-2.6.1/include" -L"C:/SFML-2.6.1/lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 // förstår intr varför min launch.json och tasks.json + cpp.properties löser det åt mig men aja
 // kom ihåg att skapa en bin (mkdir bin) då ej bin ligger i git
 using namespace std;
@@ -26,7 +29,7 @@ class Ghost_Tester
 {
 
 public:
-  std::map<string, Ghost *> ghosts;
+  map<string, Ghost *> ghosts;
   Ghost_Tester()
       : pacman{}
   {
@@ -82,6 +85,10 @@ private:
     }
 
     // Draw Ghosts
+    if (blinky->get_position() == curr_pos)
+    {
+      to_draw[0] = 'B';
+    }
     for (const auto &pair : ghosts)
     {
       auto ghost = pair.second;
@@ -89,10 +96,10 @@ private:
       {
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
-
+      // Point next_target;
+      // ghost->select_new_target;
       if (ghost->get_target_position() == curr_pos)
       {
-
         to_draw[0] = tolower(ghost->get_color()[0]);
       }
     }

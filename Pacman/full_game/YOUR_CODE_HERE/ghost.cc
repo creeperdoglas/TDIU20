@@ -25,16 +25,16 @@ Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed,
 
 void Ghost::set_position(const Point &new_position)
 {
-  position.x = static_cast<float>(new_position.x);
-  position.y = static_cast<float>(new_position.y);
+  position.x = new_position.x;
+  position.y = new_position.y;
 }
 Point Ghost::get_target_position() const
 {
   return Point{lastTargetPosition.x, lastTargetPosition.y};
 }
-Point Ghost::get_position() const
+Point Ghost::get_position()
 {
-  return Point{static_cast<int>(position.x), static_cast<int>(position.y)};
+  return Point{position.x, position.y};
 }
 
 // Blinky constructor
@@ -69,6 +69,14 @@ void Blinky::select_new_target(Point &current_target, Point &next_target)
     next_target = Point{6, 6};
   }
   lastTargetPosition = next_target;
+}
+Point Blinky::get_target_position() const
+{
+  return Point{lastTargetPosition.x, lastTargetPosition.y};
+}
+Point Blinky::get_position()
+{
+  return Point{position.x, position.y};
 }
 bool Blinky::is_angry() const
 {

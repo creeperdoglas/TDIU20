@@ -17,9 +17,9 @@ public:
   virtual Point chase() = 0;
   virtual void select_new_target(Point &current_position, Point &target_position) = 0;
   void set_position(const Point &new_position);
-  Point get_position() const;
+  virtual Point get_position() = 0;
   virtual std::string get_color() const = 0;
-  Point get_target_position() const;
+  virtual Point get_target_position() const = 0;
 
 protected:
   // kom ihåg att ta en titt innan jag lämnar in sen, har lagt till och tagit bort massvis av funktioner, någon lär inte användas
@@ -43,6 +43,8 @@ public:
   void set_angry(bool state);
   Point chase() override;
   std::string get_color() const override;
+  Point get_target_position() const override;
+  Point get_position() override;
 
 private:
   bool angry = false;

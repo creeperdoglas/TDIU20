@@ -17,8 +17,11 @@ using namespace std;
 //      return sf::Color::White; // Default color
 //  }
 
-Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
-    : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
+// Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
+//     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
+// anledning till att gör om är att grid, speed och scatter position ej används. pacman användes men kan istället kallas med en return och gör så att min ghost inte är beroende av pacman, speciellt eftersom allt det ska göra är att hämta pacman position
+Ghost::Ghost(Point const &start_position, const std::string &colorName)
+    : start_position(start_position), colorName(colorName)
 {
   // constructor implementation
 }
@@ -37,17 +40,23 @@ Point Ghost::get_position()
   return Point{position.x, position.y};
 }
 
+// void Ghost::select_new_target(Point &current_position, Point &target_position)
+// {
+//   // Pure virtual function, no implementation
+// }
+
 // Blinky constructor
-Blinky::Blinky(Pacman &pacman, Point const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position)
-    : Ghost(pacman, start_position, grid, 100, "red", scatter_position)
+Blinky::Blinky(Point const &start_position, std::string const &color)
+    : Ghost(start_position, "red")
 {
   // Blinky-specific initialization
 }
-Point Blinky::get_scatter_point() const
+Point Blinky::get_scatter_point(const Point &pacmanPosition) const
 {
   if (angry)
   {
-    return pacman.get_position();
+    // return pacman.get_position();
+    return pacmanPosition;
   }
   else
   {
@@ -55,19 +64,15 @@ Point Blinky::get_scatter_point() const
                         //  men int grid_width = grid.rows[0].size(); int grid_height = grid.rows.size(); . där  rows är inaccessible och har ingen blekaste om jag får ändra grid filen :/
   }
 }
-void Blinky::select_new_target(Point &current_target, Point &next_target)
+void Blinky::select_new_target(const Point &pacmanPosition, Point &current_target, Point &next_target)
 {
-  if (angry)
-  {
-    // Direct chase: Target is Pacman's current position
-    Point pacmanPosition = pacman.get_position();
-    next_target = Point{pacmanPosition.x, pacmanPosition.y};
-  }
-  else
-  {
-    // Scatter mode: Target is a fixed point, e.g., (6, 6)
-    next_target = Point{6, 6};
-  }
+  // Use the result of get_scatter_point() to set the next target
+  next_target = get_scatter_point(pacmanPosition);
+
+  // Optionally, update current_target if needed
+  current_target = this->get_position();
+
+  // Update Blinky's internal last target position to reflect the new target
   lastTargetPosition = next_target;
 }
 Point Blinky::get_target_position() const
@@ -91,9 +96,10 @@ void Blinky::set_angry(bool state)
 /*
 returnerar en "Point" som blinky ska jaga.
 */
-Point Blinky::chase()
+Point Blinky::chase(const Point &pacmanPosition)
 {
-  return pacman.get_position();
+  return pacmanPosition;
+  // return pacman.get_position();
 }
 string Blinky::get_color() const
 {

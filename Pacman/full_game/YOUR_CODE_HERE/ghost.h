@@ -10,12 +10,11 @@
 class Ghost
 {
 public:
-  Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position);
+  Ghost(Point const &start_position, std::string const &color);
   virtual ~Ghost() = default;
-
-  virtual Point get_scatter_point() const = 0;
-  virtual Point chase() = 0;
-  virtual void select_new_target(Point &current_position, Point &target_position) = 0;
+  virtual Point get_scatter_point(const Point &pacmanPosition) const = 0;
+  virtual Point chase(const Point &pacmanPosition) = 0;
+  virtual void select_new_target(const Point &pacmanPosition, Point &current_position, Point &target_position) = 0;
   void set_position(const Point &new_position);
   virtual Point get_position() = 0;
   virtual std::string get_color() const = 0;
@@ -23,10 +22,10 @@ public:
 
 protected:
   // kom ihåg att ta en titt innan jag lämnar in sen, har lagt till och tagit bort massvis av funktioner, någon lär inte användas
-  Pacman &pacman;
-  Point scatter_position;
-  Grid &grid;           // Reference to a Grid object
-  int speed;            // Speed of the ghost
+  // Pacman &pacman;
+  // Point scatter_position;
+  // Grid &grid;           // Reference to a Grid object
+  // int speed;            // Speed of the ghost
   Point start_position; // Added based on constructor usage
   Point position;
   std::string colorName;
@@ -36,12 +35,12 @@ protected:
 class Blinky : public Ghost
 {
 public:
-  Blinky(Pacman &pacman, Point const &start_position, Grid &grid, int speed, std::string const &color, Point const &scatter_position);
-  Point get_scatter_point() const override;
-  void select_new_target(Point &current_target, Point &next_target) override;
+  Blinky(Point const &start_position, std::string const &color);
+  Point get_scatter_point(const Point &pacmanPosition) const override;
+  void select_new_target(const Point &pacmanPosition, Point &current_target, Point &next_target) override;
   bool is_angry() const;
   void set_angry(bool state);
-  Point chase() override;
+  Point chase(const Point &pacmanPosition) override;
   std::string get_color() const override;
   Point get_target_position() const override;
   Point get_position() override;

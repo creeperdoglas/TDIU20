@@ -33,15 +33,20 @@ public:
   Ghost_Tester()
       : pacman{}
   {
-    ghosts["blinky"] = new Blinky(pacman, Point{3, 3}, grid, 100, "red", Point{6, 6});
+    ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
+    Blinky newBlinky = Blinky(Point{3, 3}, "red");
   }
 
   void run()
   {
     while (true)
     {
-      Point next_target;
-      ghost->select_new_target(); // fixa på pc hemma.
+      // Point current_target = blinky->get_position();
+      // Point next_target;
+
+      // // Call select_new_target with both current and next target
+      // blinky->select_new_target(current_target, next_target);
+
       draw_map();
       cout << "> ";
 
@@ -53,7 +58,7 @@ public:
       iss >> command;
       if (command == "chase")
       {
-        blinky->chase();
+        // blinky->chase();
       }
       if (command == "pos")
       {
@@ -79,7 +84,7 @@ private:
   string to_draw(Point const &curr_pos)
   {
     string to_draw{"  "};
-
+    Point pacmanPosition = pacman.get_position(); // för ghost då den inte är bereoende av pacman :D
     // Draw Pacman
     if (pacman.get_position() == curr_pos)
     {
@@ -110,7 +115,7 @@ private:
   }
   // Pacman pacman;
   Blinky *blinky;
-  Grid grid;
+  // Grid grid; behövs ej längre
 
   /*
     En hjälpfunktion för att rita ut spelplanen för testprogrammet.

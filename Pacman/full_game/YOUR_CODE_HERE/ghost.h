@@ -16,7 +16,7 @@ public:
   virtual Point chase(const Point &pacmanPosition) = 0;
   virtual void select_new_target(const Point &pacmanPosition, Point &current_position, Point &target_position) = 0;
   void set_position(const Point &new_position);
-  virtual Point get_position() = 0;
+  virtual Point get_position();
   virtual std::string get_color() const = 0;
   virtual Point get_target_position() const = 0;
 

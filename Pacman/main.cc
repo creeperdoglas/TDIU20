@@ -34,7 +34,8 @@ public:
       : pacman{}
   {
     ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
-    Blinky newBlinky = Blinky(Point{3, 3}, "red");
+    // Blinky newBlinky = Blinky(Point{3, 3}, "red");
+    Blinky *blinky = new Blinky(Point{4, 7}, "red");
   }
 
   void run()
@@ -54,23 +55,53 @@ public:
       getline(cin, line);
       istringstream iss{line};
 
+      string color;
+      int x, y;
       string command{};
       iss >> command;
+
       if (command == "chase")
       {
         // blinky->chase();
       }
+      // if (iss >> color >> x >> y) // Successfully parsed color and position
+      // {
+      //   Point position{x, y};
+      //   string key = color + " " + to_string(x) + "," + to_string(y); // skapa unik key för varje ghost
+
+      //   if (color == "red")
+      //   {
+      //     ghosts[key] = new Blinky(position, color);
+      //   }
+      // }
       if (command == "pos")
       {
         Point new_pos{};
         iss >> new_pos.x >> new_pos.y;
         pacman.set_position(new_pos);
       }
-      else if (command == "dir")
+      else
+      {
+        string color = command;
+        int x, y;
+        iss >> x >> y;
+        Point new_pos{x, y};
+        string key = color + " " + to_string(x) + "," + to_string(y); // skapa unik key för varje ghost
+        if (color == "red")
+        {
+          ghosts[key] = new Blinky(new_pos, color);
+        }
+      }
+      if (command == "dir")
       {
       }
       else if (command == "quit")
       {
+        for (auto &pair : ghosts)
+        {
+          delete pair.second; // Delete the dynamically allocated Ghost
+        }
+        ghosts.clear();
         break;
       }
     }
@@ -91,11 +122,13 @@ private:
       to_draw[1] = '@';
     }
 
+    Point blinkyPos = blinky->get_position();
+    if (blinkyPos == curr_pos)
+    {
+      to_draw[0] = 'B';
+    }
     // Draw Ghosts
-    // if (blinky->get_position() == curr_pos)
-    // {
-    //   to_draw[0] = 'B';
-    // }
+
     for (const auto &pair : ghosts)
     {
       auto ghost = pair.second;
@@ -103,9 +136,7 @@ private:
       {
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
-      // Point next_target;
-      // ghost->select_new_target();
-      if (ghost->get_target_position() == curr_pos)
+      else if (ghost->get_target_position() == curr_pos)
       {
         to_draw[0] = tolower(ghost->get_color()[0]);
       }
@@ -113,8 +144,10 @@ private:
 
     return to_draw;
   }
-  // Pacman pacman;
+
+  // för polimorfism, går inte annars om ej pointer
   Blinky *blinky;
+  // unique_ptr<Blinky> blinky = make_unique<Blinky>(Point{3, 3}, "red"); //lekte runt lite, men kommer inte lösa vårt problem
   // Grid grid; behövs ej längre
 
   /*

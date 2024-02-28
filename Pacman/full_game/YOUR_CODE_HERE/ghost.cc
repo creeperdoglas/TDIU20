@@ -20,10 +20,10 @@ using namespace std;
 // Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
 //     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
 // anledning till att gör om är att grid, speed och scatter position ej används. pacman användes men kan istället kallas med en return och gör så att min ghost inte är beroende av pacman, speciellt eftersom allt det ska göra är att hämta pacman position
-Ghost::Ghost(Point const &start_position, const std::string &colorName)
-    : start_position(start_position), colorName(colorName)
+Ghost::Ghost(Point const &start_position, const string &colorName)
+    : position(start_position), colorName(colorName)
 {
-  // constructor implementation
+  // position = start_position;
 }
 
 void Ghost::set_position(const Point &new_position)
@@ -40,13 +40,12 @@ Point Ghost::get_position()
   return Point{position.x, position.y};
 }
 
-// void Ghost::select_new_target(Point &current_position, Point &target_position)
-// {
-//   // Pure virtual function, no implementation
-// }
+void Ghost::select_new_target(const Point &PacmanPosition, Point &current_position, Point &target_position)
+{
+}
 
 // Blinky constructor
-Blinky::Blinky(Point const &start_position, std::string const &color)
+Blinky::Blinky(Point const &start_position, string const &color)
     : Ghost(start_position, "red")
 {
   // Blinky-specific initialization

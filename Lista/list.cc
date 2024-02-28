@@ -145,14 +145,14 @@ void List::remove(int N)
 // Returnerar en referens till det element som finns på platsen index i listan.
 int List::size() const
 {
-  int count = 0;
-  Element *curr = first->next;
-  while (curr != last)
+  int size{};
+  Element *temp{first};
+  while (temp->next != last)
   {
-    ++count;
-    curr = curr->next;
+    size++;
+    temp = temp->next;
   }
-  return count;
+  return size;
 }
 
 // överbelastad operator som returnerar en referens till det element som finns på platsen index i listan.
@@ -160,14 +160,14 @@ int &List::operator[](int const index) const
 {
   if (index < 0 || index >= size())
   {
-    throw std::out_of_range("Index out of range");
+    throw out_of_range{"Index out of range"};
   }
-  Element *curr = first->next;
-  for (int i = 0; i < index; ++i)
+  Element *temp{first};
+  for (int i{}; i <= index; i++)
   {
-    curr = curr->next;
+    temp = temp->next;
   }
-  return curr->value;
+  return temp->value;
 }
 
 // konvertera lista till string

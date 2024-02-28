@@ -35,7 +35,7 @@ public:
   {
     ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
     // Blinky newBlinky = Blinky(Point{3, 3}, "red");
-    Blinky *blinky = new Blinky(Point{4, 7}, "red");
+    // Blinky *blinky = new Blinky(Point{4, 7}, "red");
   }
 
   void run()
@@ -89,7 +89,8 @@ public:
         string key = color + " " + to_string(x) + "," + to_string(y); // skapa unik key för varje ghost
         if (color == "red")
         {
-          ghosts[key] = new Blinky(new_pos, color);
+          // cout << "red found" << endl;
+          // Blinky->set_position(new_pos);
         }
       }
       if (command == "dir")
@@ -122,11 +123,12 @@ private:
       to_draw[1] = '@';
     }
 
-    Point blinkyPos = blinky->get_position();
-    if (blinkyPos == curr_pos)
-    {
-      to_draw[0] = 'B';
-    }
+    // Point blinkyPos = blinky->get_position();
+    // if (blinkyPos == curr_pos)
+    // {
+    //   cout << "blinky found" << endl;
+    //   to_draw[0] = 'B';
+    // }
     // Draw Ghosts
 
     for (const auto &pair : ghosts)
@@ -134,10 +136,12 @@ private:
       auto ghost = pair.second;
       if (ghost->get_position() == curr_pos)
       {
+        // cout << "ghost found" << endl;
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
       else if (ghost->get_target_position() == curr_pos)
       {
+        // cout << "target found" << endl;
         to_draw[0] = tolower(ghost->get_color()[0]);
       }
     }

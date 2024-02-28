@@ -65,18 +65,16 @@ Point Blinky::get_scatter_point(const Point &pacmanPosition) const
 }
 void Blinky::select_new_target(const Point &pacmanPosition, Point &current_target, Point &next_target)
 {
-  // Use the result of get_scatter_point() to set the next target
   next_target = get_scatter_point(pacmanPosition);
 
-  // Optionally, update current_target if needed
   current_target = this->get_position();
 
-  // Update Blinky's internal last target position to reflect the new target
   lastTargetPosition = next_target;
 }
 Point Blinky::get_target_position() const
 {
-  return Point{lastTargetPosition.x, lastTargetPosition.y};
+  // return Point{lastTargetPosition.x, lastTargetPosition.y};
+  return lastTargetPosition;
 }
 Point Blinky::get_position()
 {

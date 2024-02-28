@@ -99,7 +99,7 @@ public:
       {
         for (auto &pair : ghosts)
         {
-          delete pair.second; // Delete the dynamically allocated Ghost
+          delete pair.second; // Delete, skulle nog kunna ta bort, men låter va kvar
         }
         ghosts.clear();
         break;

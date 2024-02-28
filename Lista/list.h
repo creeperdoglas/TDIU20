@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <initializer_list>
+#include <string>
 
 class List
 {
@@ -8,41 +9,37 @@ private:
   class Element
   {
   public:
-    Element() = default;
-    Element(int n);
-    ~Element() = default;
-    Element(Element const &) = delete;
-    Element(Element &&) = delete;
-    Element operator=(Element const &) = delete;
-    Element operator=(Element &&) = delete;
-
-    Element *next{nullptr};
-    Element *prev{nullptr};
     int value;
+    Element *next;
+    Element *prev;
+
+    Element(int n = 0) : value(n), next(nullptr), prev(nullptr) {}
   };
+
   Element *first, *last;
 
 public:
   List();
-  ~List();
   List(std::initializer_list<int> const &data);
   List(List const &L);
   List(List &&L);
+  ~List();
 
   List &operator=(List const &L);
-  List &operator=(List &&L);
+  List &operator=(List &&L) noexcept;
 
-  int &operator[](int const index) const;
-  void insert(int const N) const;
-  void remove(int const N) const;
+  void insert(int const N);
+  void remove(int const N);
   int size() const;
-  void append(int const N) const;
-  friend std::ostream &operator<<(std::ostream &os, List const &L);
+  void append(int N);
+  std::string to_string() const;
+  int &operator[](int const index) const;
 
   class List_iterator
   {
   public:
     friend class List;
+    List_iterator(const List_iterator &) = default;
     List_iterator &operator=(List_iterator const &);
     List_iterator &operator++();
     bool operator==(List_iterator const &it) const;
@@ -59,3 +56,4 @@ public:
   List_iterator insert(List_iterator position, const int &N);
   List sub(std::initializer_list<int> indices);
 };
+std::ostream &operator<<(std::ostream &os, const List &list);

@@ -3,7 +3,7 @@
 #include <sstream>
 #include <utility>
 #include "catch.hpp"
-#include "List.h"
+#include "list.h"
 
 using namespace std;
 

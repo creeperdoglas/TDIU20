@@ -34,6 +34,10 @@ public:
   Ghost_Tester()
       : pacman{}
   {
+
+    /// TODO :::
+    // vector istället för map :(
+    // inky position
     ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
     ghosts["pinky"] = new Pinky(Point{5, 5}, "pink");
     ghosts["clyde"] = new Clyde(Point{7, 7}, "orange");

@@ -153,6 +153,8 @@ private:
     Point pacmanPosition = pacman.get_position(); // för ghost då den inte är bereoende av pacman :D
     Point pacmanDirection = pacman.get_direction();
     Point blinkyPosition = ghosts["blinky"]->get_position();
+    // hmm ger miljoner :/
+    //  std::cout << "Inky's position: " << ghosts["inky"]->get_position().x << ", " << ghosts["inky"]->get_position().y << std::endl;
 
     // Draw Pacman
     if (pacman.get_position() == curr_pos)

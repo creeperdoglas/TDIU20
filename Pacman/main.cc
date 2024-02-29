@@ -71,6 +71,12 @@ public:
         iss >> new_pos.x >> new_pos.y;
         pacman.set_position(new_pos);
       }
+      else if (command == "dir")
+      {
+        Point new_dir{};
+        iss >> new_dir.x >> new_dir.y;
+        pacman.set_direction(new_dir);
+      }
       else
       {
         string color = command;
@@ -94,12 +100,21 @@ public:
           ghosts["clyde"]->set_position(new_pos);
         }
       }
-      if (command == "dir")
-      {
-        Point new_dir{};
-        iss >> new_dir.x >> new_dir.y;
-        pacman.set_direction(new_dir);
-      }
+      // if (command == "dir")
+      // {
+      //   iss.clear(); // Clear error flags
+
+      //   Point new_dir{};
+      //   iss >> new_dir.x >> new_dir.y;
+      //   pacman.set_direction(new_dir);
+      // }
+      // detta under funkar, men inte över????
+      //  if (command == "dir")
+      //  {
+      //    Point new_dir{0, 1}; // Hardcoded direction for testing
+      //    cout << "Hardcoded direction: " << new_dir.x << " " << new_dir.y << endl;
+      //    pacman.set_direction(new_dir);
+      //  }
       if (command == "scatter")
       {
         mode = false;

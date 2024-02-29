@@ -6,11 +6,12 @@
 #include <iomanip>
 #include <sstream>
 #include <map>
+#include <vector>
 // för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman"
 // på laptopen, byt ut Melker Gustafsson mot boren
 // Lägg till det under ifall smfl
 //-I"C:/SFML-2.6.1/include" -L"C:/SFML-2.6.1/lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-// förstår intr varför min launch.json och tasks.json + cpp.properties löser det åt mig men aja
+// förstår intr varför min launch.json och tasks.json + cpp.properties löser det åt mig men aja .kanske förresten är för .make filen . skitsamma
 // kom ihåg att skapa en bin (mkdir bin) då ej bin ligger i git
 using namespace std;
 
@@ -29,22 +30,30 @@ class Ghost_Tester
 {
 
 public:
-  map<string, Ghost *> ghosts;
+  // map<string, Ghost *> ghosts;
+  Pacman pacman;
+  vector<Ghost *> ghosts;
+  // Pacman pacman;
   bool mode = true;
   Ghost_Tester()
-      : pacman{}
+      : pacman{},
+        ghosts()
   {
+    // assistenten sa att vector skulle visa att man använder polymorfism mer, så kommer lägga in en kod men spara den gamla kommenterad
 
-    /// TODO :::
-    // vector istället för map :(
+    ghosts.push_back(new Blinky(Point{3, 3}, "red"));
+    ghosts.push_back(new Pinky(Point{5, 5}, "pink"));
+    ghosts.push_back(new Clyde(Point{7, 7}, "orange"));
+    ghosts.push_back(new Inky(Point{1, 6}, "blue"));
+
     // inky position
-    ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
-    ghosts["pinky"] = new Pinky(Point{5, 5}, "pink");
-    ghosts["clyde"] = new Clyde(Point{7, 7}, "orange");
+    // ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
+    // ghosts["pinky"] = new Pinky(Point{5, 5}, "pink");
+    // ghosts["clyde"] = new Clyde(Point{7, 7}, "orange");
     // kan lägga till inky om jag antar att blinky och pacman börjar på samma position varje gång
     // annars skulle en specifik inky pointer behövas eller en massa nya funktioner för att inkys position ska räknas ut direkt och sedan läggas till i mapen
     // 1, -3 är inkys start position så 1,19
-    ghosts["inky"] = new Inky(Point{1, 19}, "blue");
+    // ghosts["inky"] = new Inky(Point{1, 19}, "blue");
   }
 
   void run()
@@ -65,7 +74,7 @@ public:
       istringstream iss{line};
 
       string color;
-      int x, y;
+      // int x, y;
       string command{};
       iss >> command;
 
@@ -87,38 +96,32 @@ public:
         int x, y;
         iss >> x >> y;
         Point new_pos{x, y};
-        string key = color + " " + to_string(x) + "," + to_string(y); // skapa unik key för varje ghost
-        if (color == "red")
+        for (auto &ghost : ghosts)
         {
-          // cout << "red found" << endl;
-          ghosts["blinky"]->set_position(new_pos);
+          if (ghost->get_color() == color)
+          {
+            ghost->set_position(new_pos);
+            break;
+          }
         }
-        else if (color == "pink")
-        {
-          // cout << "pink found" << endl;
-          ghosts["pinky"]->set_position(new_pos);
-        }
-        else if (color == "orange")
-        {
-          // cout << "orange found" << endl;
-          ghosts["clyde"]->set_position(new_pos);
-        }
+        // string key = color + " " + to_string(x) + "," + to_string(y); // skapa unik key för varje ghost
+        // if (color == "red")
+        // {
+        //   // cout << "red found" << endl;
+        //   ghosts["blinky"]->set_position(new_pos);
+        // }
+        // else if (color == "pink")
+        // {
+        //   // cout << "pink found" << endl;
+        //   ghosts["pinky"]->set_position(new_pos);
+        // }
+        // else if (color == "orange")
+        // {
+        //   // cout << "orange found" << endl;
+        //   ghosts["clyde"]->set_position(new_pos);
+        // }
       }
-      // if (command == "dir")
-      // {
-      //   iss.clear(); // Clear error flags
 
-      //   Point new_dir{};
-      //   iss >> new_dir.x >> new_dir.y;
-      //   pacman.set_direction(new_dir);
-      // }
-      // detta under funkar, men inte över????
-      //  if (command == "dir")
-      //  {
-      //    Point new_dir{0, 1}; // Hardcoded direction for testing
-      //    cout << "Hardcoded direction: " << new_dir.x << " " << new_dir.y << endl;
-      //    pacman.set_direction(new_dir);
-      //  }
       if (command == "scatter")
       {
         mode = false;
@@ -129,15 +132,25 @@ public:
       }
       if (command == "angry")
       {
-        Blinky *blinkyPtr = dynamic_cast<Blinky *>(ghosts["blinky"]);
-        blinkyPtr->set_angry(true);
-      }
+        for (auto &ghost : ghosts)
+        {
 
+          Blinky *blinkyPtr = dynamic_cast<Blinky *>(ghost);
+
+          // Check if the cast was successful
+          if (blinkyPtr != nullptr)
+          {
+
+            blinkyPtr->set_angry(true);
+            break;
+          }
+        }
+      }
       else if (command == "quit")
       {
-        for (auto &pair : ghosts)
+        for (auto &ghost : ghosts)
         {
-          delete pair.second; // Delete, skulle nog kunna ta bort, men låter va kvar
+          delete ghost;
         }
         ghosts.clear();
         break;
@@ -156,7 +169,25 @@ private:
     string to_draw{"  "};
     Point pacmanPosition = pacman.get_position(); // för ghost då den inte är bereoende av pacman :D
     Point pacmanDirection = pacman.get_direction();
-    Point blinkyPosition = ghosts["blinky"]->get_position();
+    Point blinkyPosition;
+    Point pinkyPosition;
+    for (auto &ghost : ghosts)
+    {
+      if (ghost->get_color() == "red")
+      {
+        blinkyPosition = ghost->get_position();
+        break; // Break out of the loop once Blinky is found
+      }
+    }
+    for (auto &ghost : ghosts)
+    {
+      if (ghost->get_color() == "pink")
+      {
+        pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
+        break;
+      }
+    }
+
     // hmm ger miljoner :/
     //  std::cout << "Inky's position: " << ghosts["inky"]->get_position().x << ", " << ghosts["inky"]->get_position().y << std::endl;
 
@@ -165,15 +196,12 @@ private:
     {
       to_draw[0] = '@';
     }
-
-    for (const auto &pair : ghosts)
+    for (const auto &ghost : ghosts)
     {
-      auto ghost = pair.second;
       if (mode)
       {
-        if (ghost->chase(pacmanPosition, pacmanDirection) == curr_pos)
+        if (ghost->get_chase_point(pacmanPosition, pacmanDirection) == curr_pos)
         {
-          // cout << "target found" << endl;
           to_draw[1] = tolower(ghost->get_color()[0]);
         }
       }
@@ -181,23 +209,45 @@ private:
       {
         if (ghost->get_scatter_point(pacmanPosition) == curr_pos)
         {
-          // cout << "target found" << endl;
           to_draw[1] = tolower(ghost->get_color()[0]);
         }
       }
 
       if (ghost->get_position() == curr_pos)
       {
-        // cout << "ghost found" << endl;
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
     }
+    // for (const auto &pair : ghosts)
+    //   {
+    //     auto ghost = pair.second;
+    //     if (mode)
+    //     {
+    //       if (ghost->get_chase_point(pacmanPosition, pacmanDirection) == curr_pos)
+    //       {
+    //         // cout << "target found" << endl;
+    //         to_draw[1] = tolower(ghost->get_color()[0]);
+    //       }
+    //     }
+    //     else
+    //     {
+    //       if (ghost->get_scatter_point(pacmanPosition) == curr_pos)
+    //       {
+    //         // cout << "target found" << endl;
+    //         to_draw[1] = tolower(ghost->get_color()[0]);
+    //       }
+    //     }
+
+    //     if (ghost->get_position() == curr_pos)
+    //     {
+    //       // cout << "ghost found" << endl;
+    //       to_draw[0] = toupper(ghost->get_color()[0]);
+    //     }
+    //   }
     // inky specifk, kanske bör lägga till i map
     return to_draw;
   }
 
-  // för polimorfism, går inte annars om ej pointer
-  // Blinky *blinky;
   // unique_ptr<Blinky> blinky = make_unique<Blinky>(Point{3, 3}, "red"); //lekte runt lite, men kommer inte lösa vårt problem
   // Grid grid; behövs ej längre
 
@@ -228,8 +278,6 @@ private:
     cout << "+" << setfill('-') << setw(WIDTH * 2) << "-"
          << "+" << endl;
   }
-
-  Pacman pacman;
 };
 
 int main()

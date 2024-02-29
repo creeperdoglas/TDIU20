@@ -21,17 +21,17 @@ void Ghost::set_position(const Point &new_position)
   position.x = new_position.x;
   position.y = new_position.y;
 }
-Point Ghost::get_target_position() const
-{
-  return Point{lastTargetPosition.x, lastTargetPosition.y};
-}
+// Point Ghost::get_target_position() const
+// {
+//   return Point{lastTargetPosition.x, lastTargetPosition.y};
+// }
 Point Ghost::get_position()
 {
   return Point{position.x, position.y};
 }
 
 // Blinky constructor
-Blinky::Blinky(Point const &start_position, string const &color)
+Blinky::Blinky(Point const &start_position, string const &)
     : Ghost(start_position, "red")
 {
 }
@@ -53,11 +53,11 @@ void Blinky::set_position(const Point &new_position)
   // position.y = new_position.y;
   Ghost::set_position(new_position); // snyggare lösning
 }
-Point Blinky::get_target_position() const
-{
-  // return Point{lastTargetPosition.x, lastTargetPosition.y};
-  return lastTargetPosition;
-}
+// Point Blinky::get_target_position() const
+// {
+//   // return Point{lastTargetPosition.x, lastTargetPosition.y};
+//   return lastTargetPosition;
+// }
 Point Blinky::get_position()
 {
   return Point{position.x, position.y};
@@ -75,7 +75,8 @@ void Blinky::set_angry(bool state)
 /*
 returnerar en "Point" som blinky ska jaga.
 */
-Point Blinky::chase(const Point &pacmanPosition, const Point &pacmanDirection)
+// använder may_be_unused för att undvika varningar om att variabler ej används, används i pinky och vill därför ha kvar den i alla klasser
+[[maybe_unused]] Point Blinky::get_chase_point(const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
   return pacmanPosition;
   // return pacman.get_position();
@@ -87,11 +88,11 @@ string Blinky::get_color() const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Pinky constructor
-Pinky::Pinky(Point const &start_position, string const &color)
+Pinky::Pinky(Point const &start_position, string const &)
     : Ghost(start_position, "pink")
 {
 }
-Point Pinky::get_scatter_point(const Point &pacmanPosition) const
+Point Pinky::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) const
 {
   return Point{0, 21};
 }
@@ -100,32 +101,32 @@ void Pinky::set_position(const Point &new_position)
 {
   Ghost::set_position(new_position);
 }
-Point Pinky::get_target_position() const
-{
-  return lastTargetPosition;
-}
+// Point Pinky::get_target_position() const
+// {
+//   return lastTargetPosition;
+// }
 Point Pinky::get_position()
 {
   return Point{position.x, position.y};
 }
-Point Pinky::chase(const Point &pacmanPosition, const Point &pacmanDirection)
+Point Pinky::get_chase_point(const Point &pacmanPosition, const Point &pacmanDirection)
 {
   Point target = pacmanPosition;
   if (pacmanDirection.x == 1 && pacmanDirection.y == 0)
-  {
-    target.x = (target.x + 2) % WIDTH; // Move right and wrap around horizontally
+  {                            // hade först detta för att wrapa men enligt labb assisten behövdes det ej
+    target.x = (target.x + 2); //% WIDTH; // Move right and wrap around horizontally
   }
   else if (pacmanDirection.x == -1 && pacmanDirection.y == 0)
   {
-    target.x = (target.x - 2 + WIDTH) % WIDTH; // Move left and wrap around horizontally
+    target.x = (target.x - 2); // % WIDTH; // Move left and wrap around horizontally
   }
   else if (pacmanDirection.x == 0 && pacmanDirection.y == 1)
   {
-    target.y = (target.y + 2) % HEIGHT; // Move up and wrap around vertically
+    target.y = (target.y + 2); //% HEIGHT; // Move up and wrap around vertically
   }
   else if (pacmanDirection.x == 0 && pacmanDirection.y == -1)
   {
-    target.y = (target.y - 2 + HEIGHT) % HEIGHT; // Move down and wrap around vertically
+    target.y = (target.y - 2); // Move down and wrap around vertically
   }
   return target;
 }
@@ -135,11 +136,11 @@ string Pinky::get_color() const
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Clyde constructor
-Clyde::Clyde(Point const &start_position, std::string const &color)
+Clyde::Clyde(Point const &start_position, std::string const &)
     : Ghost(start_position, "orange")
 {
 }
-Point Clyde::get_scatter_point(const Point &pacmanPosition) const
+Point Clyde::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) const
 {
   return Point{0, 0};
 }
@@ -148,21 +149,21 @@ void Clyde::set_position(const Point &new_position)
 {
   Ghost::set_position(new_position);
 }
-Point Clyde::get_target_position() const
-{
-  return lastTargetPosition;
-}
+// Point Clyde::get_target_position() const
+// {
+//   return lastTargetPosition;
+// }
 Point Clyde::get_position()
 {
   return Point{position.x, position.y};
 }
-Point Clyde::chase(const Point &pacmanPosition, const Point &pacmanDirection)
+Point Clyde::get_chase_point(const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
   int distance = abs(position.x - pacmanPosition.x) + abs(position.y - pacmanPosition.y);
 
   if (distance <= 2)
   {
-    // If Clyde is within 2 units of Pacman, target the scatter position.
+    // Ifall Clyde är inom 2 units av Pacman, target  scatter position.
 
     return Point{0, 0};
   }
@@ -178,39 +179,61 @@ string Clyde::get_color() const
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INKY
-Inky::Inky(Point const &start_position, std::string const &color)
+Inky::Inky(Point const &start_position, string const &)
     : Ghost(start_position, "blue")
 {
 }
-Point Inky::CalculateTarget(const Point &pacmanPosition, const Point &pacmanDirection, const Point &blinkyPosition) const
+Point Inky::CalculateTarget(const Point &PinkyPosition, const Point &blinkyPosition) const
 {
-  Point twoStepsAhead = {pacmanPosition.x + 2 * pacmanDirection.x, pacmanPosition.y + 2 * pacmanDirection.y};
+  // Point target = pacmanPosition;
+  // if (pacmanDirection.x == 1 && pacmanDirection.y == 0)
+  // {                            // hade först detta för att wrapa men enligt labb assisten behövdes det ej
+  //   target.x = (target.x + 2); //% WIDTH; // Move right and wrap around horizontally
+  // }
+  // else if (pacmanDirection.x == -1 && pacmanDirection.y == 0)
+  // {
+  //   target.x = (target.x - 2); // % WIDTH; // Move left and wrap around horizontally
+  // }
+  // else if (pacmanDirection.x == 0 && pacmanDirection.y == 1)
+  // {
+  //   target.y = (target.y + 2); //% HEIGHT; // Move up and wrap around vertically
+  // }
+  // else if (pacmanDirection.x == 0 && pacmanDirection.y == -1)
+  // {
+  //   target.y = (target.y - 2); // Move down and wrap around vertically
+  // }
 
-  // Calculate the vector from Blinky to the point two steps ahead of Pacman
-  Point vectorToTwoStepsAhead = {twoStepsAhead.x - blinkyPosition.x, twoStepsAhead.y - blinkyPosition.y};
+  // Point twoStepsAhead = {((pacmanPosition.x + 2) * target.x), ((pacmanPosition.y + 2) * target.y)};
 
-  // Calculate Inky's target by extending the line the same distance beyond the two steps ahead of Pacman
-  Point inkysTarget = {twoStepsAhead.x + vectorToTwoStepsAhead.x, twoStepsAhead.y + vectorToTwoStepsAhead.y};
+  // // Calculate the vector from Blinky to the point two steps ahead of Pacman
+  // Point vectorToTwoStepsAhead = {(twoStepsAhead.x - blinkyPosition.x), (twoStepsAhead.y - blinkyPosition.y)};
 
+  // // Calculate Inky's target by extending the line the same distance beyond the two steps ahead of Pacman
+  // Point inkysTarget = {(twoStepsAhead.x + vectorToTwoStepsAhead.x), (twoStepsAhead.y + vectorToTwoStepsAhead.y)};
+  Point inkysTargetBegin = {(PinkyPosition.x - blinkyPosition.x), (PinkyPosition.y - blinkyPosition.y)};
+  Point inkysTarget = {(inkysTargetBegin.x + PinkyPosition.x), (inkysTargetBegin.y + PinkyPosition.y)};
   return inkysTarget;
 }
 Point Inky::get_position()
 {
-  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+  return CalculateTarget(pinkyPosition, blinkyPosition);
 }
 string Inky::get_color() const
 {
   return "blue";
 }
-Point Inky::get_target_position() const
+// Point Inky::get_target_position() const
+// {
+//   return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+// }
+Point Inky::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) const
 {
-  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+  Point tihi = CalculateTarget(pinkyPosition, blinkyPosition);
+  return tihi;
 }
-Point Inky::get_scatter_point(const Point &pacmanPosition) const
+Point Inky::get_chase_point([[maybe_unused]] const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
-  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
-}
-Point Inky::chase(const Point &pacmanPosition, const Point &pacmanDirection)
-{
-  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+  Point tihi = CalculateTarget(pinkyPosition, blinkyPosition);
+  // cout << "Inky's position: " << tihi.x << ", " << tihi.y << endl;
+  return tihi;
 }

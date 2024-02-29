@@ -183,7 +183,7 @@ Inky::Inky(Point const &start_position, string const &)
     : Ghost(start_position, "blue")
 {
 }
-Point Inky::CalculateTarget(const Point &PinkyPosition, const Point &blinkyPosition) const
+Point Inky::CalculateTarget(const Point &pinkyPosition, const Point &blinkyPosition) const
 {
   // Point twoStepsAhead = {((pacmanPosition.x + 2) * target.x), ((pacmanPosition.y + 2) * target.y)};
 
@@ -192,8 +192,8 @@ Point Inky::CalculateTarget(const Point &PinkyPosition, const Point &blinkyPosit
 
   // // Calculate Inky's target by extending the line the same distance beyond the two steps ahead of Pacman
   // Point inkysTarget = {(twoStepsAhead.x + vectorToTwoStepsAhead.x), (twoStepsAhead.y + vectorToTwoStepsAhead.y)};
-  Point inkysTargetBegin = {(PinkyPosition.x - blinkyPosition.x), (PinkyPosition.y - blinkyPosition.y)};
-  Point inkysTarget = {(inkysTargetBegin.x + PinkyPosition.x), (inkysTargetBegin.y + PinkyPosition.y)};
+  Point inkysTargetBegin = {(pinkyPosition.x - blinkyPosition.x), (pinkyPosition.y - blinkyPosition.y)};
+  Point inkysTarget = {(inkysTargetBegin.x + pinkyPosition.x), (inkysTargetBegin.y + pinkyPosition.y)};
   return inkysTarget;
 }
 Point Inky::get_position()
@@ -210,14 +210,19 @@ string Inky::get_color() const
 // }
 Point Inky::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) const
 {
-  Point tihi = CalculateTarget(pinkyPosition, blinkyPosition);
-  return tihi;
+  return CalculateTarget(pinkyPosition, blinkyPosition);
 }
 Point Inky::get_chase_point([[maybe_unused]] const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
   // cout << pinkyPosition.x << ", " << pinkyPosition.y << endl;
   // cout << blinkyPosition.x << ", " << blinkyPosition.y << endl;
-  Point tihi = CalculateTarget(pinkyPosition, blinkyPosition);
-  // cout << "Inky's position: " << tihi.x << ", " << tihi.y << endl;
-  return tihi;
+  return CalculateTarget(pinkyPosition, blinkyPosition);
+}
+void Inky::set_blinky_position(const Point &new_position)
+{
+  Ghost::blinkyPosition = new_position;
+}
+void Inky::set_pinky_position(const Point &new_position)
+{
+  Ghost::pinkyPosition = new_position;
 }

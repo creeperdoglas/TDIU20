@@ -170,6 +170,9 @@ private:
     string to_draw{"  "};
     Point pacmanPosition = pacman.get_position(); // för ghost då den inte är bereoende av pacman :D
     Point pacmanDirection = pacman.get_direction();
+    Point blinkyPosition;
+    Point pinkyPosition;
+    Inky *inkyPtr = nullptr;
     // Point blinkyPosition;
     // Point pinkyPosition;
 
@@ -177,20 +180,52 @@ private:
     {
       if (ghost->get_color() == "red")
       {
-        // detta verkar inte uppdatera blinky position samma med pinky, men det borde ju funka?
-        Point blinkyPosition = ghost->get_position();
-        ghost->set_blinky_position(blinkyPosition);
-        break;
+        blinkyPosition = ghost->get_position();
       }
-    }
-    for (auto &ghost : ghosts)
-    {
-      if (ghost->get_color() == "pink")
+      else if (ghost->get_color() == "pink")
       {
-        Point pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
-        ghost->set_pinky_position(pinkyPosition);
+        pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
+      }
+      else if (ghost->get_color() == "blue")
+      {
+        inkyPtr = dynamic_cast<Inky *>(ghost);
       }
     }
+    if (inkyPtr != nullptr)
+    {
+      inkyPtr->set_blinky_position(blinkyPosition);
+      inkyPtr->set_pinky_position(pinkyPosition);
+    }
+    // gammal som inte funkade
+    //  for (auto &ghost : ghosts)
+    //  {
+    //    if (ghost->get_color() == "red")
+    //    {
+    //      // detta verkar inte uppdatera blinky position samma med pinky, men det borde ju funka?
+    //      // Point blinkyPosition = ghost->get_position();
+    //      // ghost->set_blinky_position(blinkyPosition);
+    //      Point blinkyPosition = ghost->get_position();
+    //      Inky *inkyPtr = dynamic_cast<Inky *>(ghost);
+    //      if (inkyPtr != nullptr)
+    //      {
+    //        inkyPtr->set_blinky_position(blinkyPosition);
+    //      }
+    //      break;
+    //    }
+    //  }
+    //  for (auto &ghost : ghosts)
+    //  {
+    //    if (ghost->get_color() == "pink")
+    //    {
+    //      Point pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
+    //      // ghost->set_pinky_position(pinkyPosition);
+    //      Inky *inkyPtr = dynamic_cast<Inky *>(ghost);
+    //      if (inkyPtr != nullptr)
+    //      {
+    //        inkyPtr->set_pinky_position(pinkyPosition);
+    //      }
+    //    }
+    //  }
 
     // hmm ger miljoner :/
     //  std::cout << "Inky's position: " << ghosts["inky"]->get_position().x << ", " << ghosts["inky"]->get_position().y << std::endl;

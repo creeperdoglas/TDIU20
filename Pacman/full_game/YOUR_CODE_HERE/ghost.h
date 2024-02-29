@@ -19,12 +19,12 @@ public:
   virtual std::string get_color() const = 0;
   // virtual Point get_target_position() const = 0;
 
-  void set_blinky_position(const Point &new_position)
+  virtual void set_blinky_position(const Point &new_position)
   {
     blinkyPosition.x = new_position.x;
     blinkyPosition.y = new_position.y;
   }
-  void set_pinky_position(const Point &new_position)
+  virtual void set_pinky_position(const Point &new_position)
   {
     pinkyPosition.x = new_position.x;
     pinkyPosition.y = new_position.y;
@@ -97,6 +97,13 @@ public:
   Point get_scatter_point(const Point &pacmanPosition) const override;
   Point get_chase_point(const Point &pacmanPosition, const Point &pacmanDirection) override;
 
+  void set_blinky_position(const Point &new_position) override;
+
+  void set_pinky_position(const Point &new_position) override;
+
+  // {
+  //   Ghost::set_pinky_position(new_position);
+  // }
   // void setPacmanPosition(const Point &positionP)
   // {
   //   pacmanPosition = positionP;

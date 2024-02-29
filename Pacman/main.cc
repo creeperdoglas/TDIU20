@@ -1,6 +1,6 @@
 #include "full_game/YOUR_CODE_HERE/ghost.h"
 // #include "SFML/Graphics.hpp"
-#include "given.h "
+// #include "given.h"
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -28,7 +28,8 @@ using namespace std;
 
 class Ghost_Tester
 {
-
+  // verkar som jag fått ett windows specifikt kompileringsfel då pinkyposition och blinkyposition alltid ligger i miljoner men de fungerar senare i koden, för har testat i seperat fil och inky matten fungerar
+  // om de visar sig att jag gjort något fel med hur inky får in pinkyposion och blinkyposition, skulle jag behöva en liten knuff i rätt riktning i kompletteringen, för ser verkligen inte vad jag gjort fel
 public:
   // map<string, Ghost *> ghosts;
   Pacman pacman;
@@ -171,10 +172,12 @@ private:
     Point pacmanDirection = pacman.get_direction();
     // Point blinkyPosition;
     // Point pinkyPosition;
+
     for (auto &ghost : ghosts)
     {
       if (ghost->get_color() == "red")
       {
+        // detta verkar inte uppdatera blinky position samma med pinky, men det borde ju funka?
         ghost->set_blinky_position(ghost->get_position());
         break;
       }

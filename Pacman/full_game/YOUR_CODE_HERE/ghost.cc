@@ -11,7 +11,7 @@ using namespace std;
 //     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
 // anledning till att gör om är att grid, speed och scatter position ej används. pacman användes men kan istället kallas med en return och gör så att min ghost inte är beroende av pacman, speciellt eftersom allt det ska göra är att hämta pacman position
 Ghost::Ghost(Point const &start_position, const string &colorName)
-    : position(start_position), colorName(colorName)
+    : position(start_position), colorName(colorName), blinkyPosition(), pinkyPosition()
 {
   // position = start_position;
 }
@@ -215,8 +215,8 @@ Point Inky::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) cons
 }
 Point Inky::get_chase_point([[maybe_unused]] const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
-  cout << pinkyPosition.x << ", " << pinkyPosition.y << endl;
-  cout << blinkyPosition.x << ", " << blinkyPosition.y << endl;
+  // cout << pinkyPosition.x << ", " << pinkyPosition.y << endl;
+  // cout << blinkyPosition.x << ", " << blinkyPosition.y << endl;
   Point tihi = CalculateTarget(pinkyPosition, blinkyPosition);
   // cout << "Inky's position: " << tihi.x << ", " << tihi.y << endl;
   return tihi;

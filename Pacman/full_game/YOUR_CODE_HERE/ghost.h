@@ -19,6 +19,15 @@ public:
   virtual std::string get_color() const = 0;
   // virtual Point get_target_position() const = 0;
 
+  void set_blinky_position(const Point &new_position)
+  {
+    blinkyPosition = new_position;
+  }
+  void set_pinky_position(const Point &new_position)
+  {
+    pinkyPosition = new_position;
+  }
+
 protected:
   // kom ihåg att ta en titt innan jag lämnar in sen, har lagt till och tagit bort massvis av funktioner, någon lär inte användas
   // Pacman &pacman;
@@ -28,6 +37,10 @@ protected:
   // Point start_position; // Added based on constructor usage
   Point position;
   std::string colorName;
+  Point blinkyPosition;
+  Point pinkyPosition;
+  // Point BlinkysPosition;
+  // Point PinkyPosition;
   // Point lastTargetPosition;
 };
 
@@ -98,7 +111,5 @@ public:
   // }
 
 private:
-  Point pinkyPosition;
-  Point blinkyPosition;
 };
 #endif

@@ -76,7 +76,7 @@ void Blinky::set_angry(bool state)
 returnerar en "Point" som blinky ska jaga.
 */
 // använder may_be_unused för att undvika varningar om att variabler ej används, används i pinky och vill därför ha kvar den i alla klasser
-[[maybe_unused]] Point Blinky::get_chase_point(const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
+Point Blinky::get_chase_point(const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
   return pacmanPosition;
   // return pacman.get_position();
@@ -185,24 +185,6 @@ Inky::Inky(Point const &start_position, string const &)
 }
 Point Inky::CalculateTarget(const Point &PinkyPosition, const Point &blinkyPosition) const
 {
-  // Point target = pacmanPosition;
-  // if (pacmanDirection.x == 1 && pacmanDirection.y == 0)
-  // {                            // hade först detta för att wrapa men enligt labb assisten behövdes det ej
-  //   target.x = (target.x + 2); //% WIDTH; // Move right and wrap around horizontally
-  // }
-  // else if (pacmanDirection.x == -1 && pacmanDirection.y == 0)
-  // {
-  //   target.x = (target.x - 2); // % WIDTH; // Move left and wrap around horizontally
-  // }
-  // else if (pacmanDirection.x == 0 && pacmanDirection.y == 1)
-  // {
-  //   target.y = (target.y + 2); //% HEIGHT; // Move up and wrap around vertically
-  // }
-  // else if (pacmanDirection.x == 0 && pacmanDirection.y == -1)
-  // {
-  //   target.y = (target.y - 2); // Move down and wrap around vertically
-  // }
-
   // Point twoStepsAhead = {((pacmanPosition.x + 2) * target.x), ((pacmanPosition.y + 2) * target.y)};
 
   // // Calculate the vector from Blinky to the point two steps ahead of Pacman
@@ -233,6 +215,8 @@ Point Inky::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) cons
 }
 Point Inky::get_chase_point([[maybe_unused]] const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
+  cout << pinkyPosition.x << ", " << pinkyPosition.y << endl;
+  cout << blinkyPosition.x << ", " << blinkyPosition.y << endl;
   Point tihi = CalculateTarget(pinkyPosition, blinkyPosition);
   // cout << "Inky's position: " << tihi.x << ", " << tihi.y << endl;
   return tihi;

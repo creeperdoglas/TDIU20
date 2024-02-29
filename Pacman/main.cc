@@ -169,21 +169,21 @@ private:
     string to_draw{"  "};
     Point pacmanPosition = pacman.get_position(); // för ghost då den inte är bereoende av pacman :D
     Point pacmanDirection = pacman.get_direction();
-    Point blinkyPosition;
-    Point pinkyPosition;
+    // Point blinkyPosition;
+    // Point pinkyPosition;
     for (auto &ghost : ghosts)
     {
       if (ghost->get_color() == "red")
       {
-        blinkyPosition = ghost->get_position();
-        break; // Break out of the loop once Blinky is found
+        ghost->set_blinky_position(ghost->get_position());
+        break;
       }
     }
     for (auto &ghost : ghosts)
     {
       if (ghost->get_color() == "pink")
       {
-        pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
+        ghost->set_pinky_position(ghost->get_chase_point(pacmanPosition, pacmanDirection));
         break;
       }
     }
@@ -202,6 +202,7 @@ private:
       {
         if (ghost->get_chase_point(pacmanPosition, pacmanDirection) == curr_pos)
         {
+
           to_draw[1] = tolower(ghost->get_color()[0]);
         }
       }

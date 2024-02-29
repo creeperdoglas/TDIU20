@@ -21,11 +21,13 @@ public:
 
   void set_blinky_position(const Point &new_position)
   {
-    blinkyPosition = new_position;
+    blinkyPosition.x = new_position.x;
+    blinkyPosition.y = new_position.y;
   }
   void set_pinky_position(const Point &new_position)
   {
-    pinkyPosition = new_position;
+    pinkyPosition.x = new_position.x;
+    pinkyPosition.y = new_position.y;
   }
 
 protected:

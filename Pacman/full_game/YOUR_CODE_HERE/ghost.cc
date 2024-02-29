@@ -11,7 +11,7 @@ using namespace std;
 //     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
 // anledning till att gör om är att grid, speed och scatter position ej används. pacman användes men kan istället kallas med en return och gör så att min ghost inte är beroende av pacman, speciellt eftersom allt det ska göra är att hämta pacman position
 Ghost::Ghost(Point const &start_position, const string &colorName)
-    : position(start_position), colorName(colorName), blinkyPosition(), pinkyPosition()
+    : position(start_position), colorName(colorName), blinkyPosition(start_position), pinkyPosition(start_position)
 {
   // position = start_position;
 }

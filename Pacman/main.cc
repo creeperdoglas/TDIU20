@@ -178,7 +178,8 @@ private:
       if (ghost->get_color() == "red")
       {
         // detta verkar inte uppdatera blinky position samma med pinky, men det borde ju funka?
-        ghost->set_blinky_position(ghost->get_position());
+        Point blinkyPosition = ghost->get_position();
+        ghost->set_blinky_position(blinkyPosition);
         break;
       }
     }
@@ -186,8 +187,8 @@ private:
     {
       if (ghost->get_color() == "pink")
       {
-        ghost->set_pinky_position(ghost->get_chase_point(pacmanPosition, pacmanDirection));
-        break;
+        Point pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
+        ghost->set_pinky_position(pinkyPosition);
       }
     }
 

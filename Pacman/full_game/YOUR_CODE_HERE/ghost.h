@@ -13,9 +13,8 @@ public:
   Ghost(Point const &start_position, std::string const &color);
   virtual ~Ghost() = default;
   virtual Point get_scatter_point(const Point &pacmanPosition) const = 0;
-  virtual Point chase(const Point &pacmanPosition) = 0;
-  virtual void select_new_target(const Point &pacmanPosition, Point &current_position, Point &target_position) = 0;
-  void set_position(const Point &new_position);
+  virtual Point chase(const Point &pacmanPosition, const Point &pacmanDirection) = 0;
+  virtual void set_position(const Point &new_position);
   virtual Point get_position();
   virtual std::string get_color() const = 0;
   virtual Point get_target_position() const = 0;
@@ -37,15 +36,55 @@ class Blinky : public Ghost
 public:
   Blinky(Point const &start_position, std::string const &color);
   Point get_scatter_point(const Point &pacmanPosition) const override;
-  void select_new_target(const Point &pacmanPosition, Point &current_target, Point &next_target) override;
+  void set_position(const Point &new_position) override;
   bool is_angry() const;
   void set_angry(bool state);
-  Point chase(const Point &pacmanPosition) override;
+  Point chase(const Point &pacmanPosition, const Point &pacmanDirection) override;
   std::string get_color() const override;
   Point get_target_position() const override;
   Point get_position() override;
 
 private:
   bool angry = false;
+};
+
+class Pinky : public Ghost
+{
+public:
+  Pinky(Point const &start_position, std::string const &color);
+  Point get_scatter_point(const Point &pacmanPosition) const override;
+  void set_position(const Point &new_position) override;
+  Point chase(const Point &pacmanPosition, const Point &pacmanDirection) override;
+  std::string get_color() const override;
+  Point get_target_position() const override;
+  Point get_position() override;
+};
+
+class Clyde : public Ghost
+{
+public:
+  Clyde(Point const &start_position, std::string const &color);
+  Point get_scatter_point(const Point &pacmanPosition) const override;
+  void set_position(const Point &new_position) override;
+  Point chase(const Point &pacmanPosition, const Point &pacmanDirection) override;
+  std::string get_color() const override;
+  Point get_target_position() const override;
+  Point get_position() override;
+};
+class Inky : public Ghost
+{
+public:
+  Inky(Point const &start_position, std::string const &color);
+  Point CalculateTarget(const Point &pacmanPosition, const Point &pacmanDirection, const Point &blinkyPosition) const;
+  Point get_position() override;
+  std::string get_color() const override;
+  Point get_target_position() const override;
+  Point get_scatter_point(const Point &pacmanPosition) const override;
+  Point chase(const Point &pacmanPosition, const Point &pacmanDirection) override;
+
+private:
+  Point pacmanPosition;
+  Point pacmanDirection;
+  Point blinkyPosition;
 };
 #endif

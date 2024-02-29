@@ -1,21 +1,11 @@
 #include "ghost.h"
-// #include "Sfml/Graphics.hpp"
-// #include "given.h" //för basic testfall
-// stort sett gjort om varenda klass så de ej använder SMFL, min förståelse är att main och given inte använder SMFL och därför bör detta programmet ej heller göra det
-// tog mig bara runt 15 timmar att förstå det :(, men har iallafall bra förståelse över SMFL nu :/
+// lite osäker  "Lägg en (1) implemenationsfil med kod för alla spöken i mappen YOUR_CODE_HERE." och "Dina spök-klasser
+// ska ligga på sin egen.h och.cc - fil, lämpligt namngivna." motsäger ju varandra, hade varit snyggare att ha varsin då de blir väldigt mycket kod i en fil men o andra sidan så ärver alla klassar från ghost och overridar ghost så utav den
+// anledningen så passar det ändå att ha allt i en fil
+//  stort sett gjort om varenda klass så de ej använder SMFL, min förståelse är att main och given inte använder SMFL och därför bör detta programmet ej heller göra det
+//  tog mig bara runt 15 timmar att förstå det :(, men har iallafall bra ("bra") förståelse över SMFL nu :/
 using namespace std;
 // kollade spec-sheeten behövs ej, bara en get color behövs :DDDD
-//  sf::Color Ghost::get_sfml_color(const std::string &colorName)
-//  {
-//    if (colorName == "red")
-//      return sf::Color::Red;
-//    else if (colorName == "pink")
-//      return sf::Color::Magenta; // Assuming pink maps to sf::Color::Magenta
-//    else if (colorName == "orange")
-//      return sf::Color(255, 165, 0); // Custom color, as SFML does not have a predefined orange
-//    else
-//      return sf::Color::White; // Default color
-//  }
 
 // Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
 //     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
@@ -40,15 +30,10 @@ Point Ghost::get_position()
   return Point{position.x, position.y};
 }
 
-void Ghost::select_new_target(const Point &PacmanPosition, Point &current_position, Point &target_position)
-{
-}
-
 // Blinky constructor
 Blinky::Blinky(Point const &start_position, string const &color)
     : Ghost(start_position, "red")
 {
-  // Blinky-specific initialization
 }
 Point Blinky::get_scatter_point(const Point &pacmanPosition) const
 {
@@ -59,17 +44,14 @@ Point Blinky::get_scatter_point(const Point &pacmanPosition) const
   }
   else
   {
-    return Point{6, 6}; // vet inte om detta är bra då inte kommer funka om annorlunda plan
-                        //  men int grid_width = grid.rows[0].size(); int grid_height = grid.rows.size(); . där  rows är inaccessible och har ingen blekaste om jag får ändra grid filen :/
+    return Point{18, 21};
   }
 }
-void Blinky::select_new_target(const Point &pacmanPosition, Point &current_target, Point &next_target)
+void Blinky::set_position(const Point &new_position)
 {
-  next_target = get_scatter_point(pacmanPosition);
-
-  current_target = this->get_position();
-
-  lastTargetPosition = next_target;
+  // position.x = new_position.x;
+  // position.y = new_position.y;
+  Ghost::set_position(new_position); // snyggare lösning
 }
 Point Blinky::get_target_position() const
 {
@@ -93,7 +75,7 @@ void Blinky::set_angry(bool state)
 /*
 returnerar en "Point" som blinky ska jaga.
 */
-Point Blinky::chase(const Point &pacmanPosition)
+Point Blinky::chase(const Point &pacmanPosition, const Point &pacmanDirection)
 {
   return pacmanPosition;
   // return pacman.get_position();
@@ -102,5 +84,133 @@ string Blinky::get_color() const
 {
   return "red";
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Pinky constructor
+Pinky::Pinky(Point const &start_position, string const &color)
+    : Ghost(start_position, "pink")
+{
+}
+Point Pinky::get_scatter_point(const Point &pacmanPosition) const
+{
+  return Point{0, 21};
+}
+
+void Pinky::set_position(const Point &new_position)
+{
+  Ghost::set_position(new_position);
+}
+Point Pinky::get_target_position() const
+{
+  return lastTargetPosition;
+}
+Point Pinky::get_position()
+{
+  return Point{position.x, position.y};
+}
+Point Pinky::chase(const Point &pacmanPosition, const Point &pacmanDirection)
+{
+  Point target = pacmanPosition;
+  if (pacmanDirection.x == 1 && pacmanDirection.y == 0)
+  {
+    target.x = (target.x + 2) % WIDTH; // Move right and wrap around horizontally
+  }
+  else if (pacmanDirection.x == -1 && pacmanDirection.y == 0)
+  {
+    target.x = (target.x - 2 + WIDTH) % WIDTH; // Move left and wrap around horizontally
+  }
+  else if (pacmanDirection.x == 0 && pacmanDirection.y == 1)
+  {
+    target.y = (target.y + 2) % HEIGHT; // Move up and wrap around vertically
+  }
+  else if (pacmanDirection.x == 0 && pacmanDirection.y == -1)
+  {
+    target.y = (target.y - 2 + HEIGHT) % HEIGHT; // Move down and wrap around vertically
+  }
+  return target;
+}
+string Pinky::get_color() const
+{
+  return "pink";
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Clyde constructor
+Clyde::Clyde(Point const &start_position, std::string const &color)
+    : Ghost(start_position, "orange")
+{
+}
+Point Clyde::get_scatter_point(const Point &pacmanPosition) const
+{
+  return Point{0, 0};
+}
+
+void Clyde::set_position(const Point &new_position)
+{
+  Ghost::set_position(new_position);
+}
+Point Clyde::get_target_position() const
+{
+  return lastTargetPosition;
+}
+Point Clyde::get_position()
+{
+  return Point{position.x, position.y};
+}
+Point Clyde::chase(const Point &pacmanPosition, const Point &pacmanDirection)
+{
+  int distance = abs(position.x - pacmanPosition.x) + abs(position.y - pacmanPosition.y);
+
+  if (distance <= 2)
+  {
+    // If Clyde is within 2 units of Pacman, target the scatter position.
+
+    return Point{0, 0};
+  }
+  else
+  {
+    // Otherwise, target Pacman's position.
+    return pacmanPosition;
+  }
+}
+string Clyde::get_color() const
+{
+  return "orange";
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INKY
+Inky::Inky(Point const &start_position, std::string const &color)
+    : Ghost(start_position, "blue")
+{
+}
+Point Inky::CalculateTarget(const Point &pacmanPosition, const Point &pacmanDirection, const Point &blinkyPosition) const
+{
+  Point twoStepsAhead = {pacmanPosition.x + 2 * pacmanDirection.x, pacmanPosition.y + 2 * pacmanDirection.y};
+
+  // Calculate the vector from Blinky to the point two steps ahead of Pacman
+  Point vectorToTwoStepsAhead = {twoStepsAhead.x - blinkyPosition.x, twoStepsAhead.y - blinkyPosition.y};
+
+  // Calculate Inky's target by extending the line the same distance beyond the two steps ahead of Pacman
+  Point inkysTarget = {twoStepsAhead.x + vectorToTwoStepsAhead.x, twoStepsAhead.y + vectorToTwoStepsAhead.y};
+
+  return inkysTarget;
+}
+Point Inky::get_position()
+{
+  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+}
+string Inky::get_color() const
+{
+  return "blue";
+}
+Point Inky::get_target_position() const
+{
+  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+}
+Point Inky::get_scatter_point(const Point &pacmanPosition) const
+{
+  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+}
+Point Inky::chase(const Point &pacmanPosition, const Point &pacmanDirection)
+{
+  return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
+}

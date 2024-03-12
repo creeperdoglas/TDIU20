@@ -7,6 +7,43 @@
 #include <sstream>
 #include <map>
 #include <vector>
+
+
+// Information om komplettering:
+//   Kompletteringen kan gälla hela filen och alla filer i labben,
+//   så får ni komplettering på en sak, kan samma sak förekomma på
+//   fler ställen utan att jag skrivit det.
+//
+//   Komplettering lämnas in via sendlab efter senast en (1) vecka.
+//
+//   Har ni frågor om kompletteringen kan ni maila mig på:
+//   Malte.Nilsson@liu.se
+
+// Komplettering: Testprogrammet ska delas upp i lämpliga funktioner.
+// Komplettering: Kodupprepning i kommandona för pos, dir och flytta spöken.
+
+// Komplettering: Att alla spöken har en blinky och en inky position är orimligt.
+// Komplettering: Vi vill inte behöva skicka med parametrar till t.ex get_chase_position utan all information om hur spöket ska beräkna det ska finnas internt i spöket.
+// Maybe unused är inget som ingår i kursen
+
+// Komplettering: Funktioner som inte ska överlagras ska inte vara virtuella.
+
+
+//Kommentar
+// pacman & är en bättre lösning då vi alltid är beroende av pacmans position för att kunna hitta vart våran chase ska vara någonstans.
+// att låta "användaren" ansvara för att uppdatera och hålla koll på det är inte en bra design.
+
+// Städa upp kommentarer innan inlämning
+
+// Kommentar (bonus): Smart att återanvända koden från Pinky. Jag skulle dock argumentera att Inky
+//   inte har med Pinky att göra och borde därför inte känna till Pinky. Det skulle vara ännu
+//   snyggare att bryta ut det gemensamma till en egen funktion som båda kan använda.
+
+
+
+
+
+
 // för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman"
 // på laptopen, byt ut Melker Gustafsson mot boren
 // Lägg till det under ifall smfl
@@ -28,8 +65,6 @@ using namespace std;
 
 class Ghost_Tester
 {
-  // verkar som jag fått ett windows specifikt kompileringsfel då pinkyposition och blinkyposition alltid ligger i miljoner men de fungerar senare i koden, för har testat i seperat fil och inky matten fungerar
-  // om de visar sig att jag gjort något fel med hur inky får in pinkyposion och blinkyposition, skulle jag behöva en liten knuff i rätt riktning i kompletteringen, för ser verkligen inte vad jag gjort fel
 public:
   // map<string, Ghost *> ghosts;
   Pacman pacman;

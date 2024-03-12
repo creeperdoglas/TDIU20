@@ -29,8 +29,10 @@
 // Kommentar
 //  pacman & är en bättre lösning då vi alltid är beroende av pacmans position för att kunna hitta vart våran chase ska vara någonstans.
 //  att låta "användaren" ansvara för att uppdatera och hålla koll på det är inte en bra design.
+/// förstår, hade jag haft mer tid skulle jag även fixat detta.
 
 // Städa upp kommentarer innan inlämning
+/// fixat, har i stort sett bara kommentaren av kompileringskommandot kvar.
 
 // Kommentar (bonus): Smart att återanvända koden från Pinky. Jag skulle dock argumentera att Inky
 //   inte har med Pinky att göra och borde därför inte känna till Pinky. Det skulle vara ännu
@@ -60,7 +62,6 @@ class Ghost_Tester
 public:
   Pacman pacman;
   vector<Ghost *> ghosts;
-  // Pacman pacman;
   bool mode = true;
   Ghost_Tester()
       : pacman{},
@@ -86,7 +87,6 @@ public:
       istringstream iss{line};
 
       string color;
-      // int x, y;
       string command{};
       iss >> command;
 

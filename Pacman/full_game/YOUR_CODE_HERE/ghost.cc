@@ -2,14 +2,8 @@
 // lite osäker  "Lägg en (1) implemenationsfil med kod för alla spöken i mappen YOUR_CODE_HERE." och "Dina spök-klasser
 // ska ligga på sin egen.h och.cc - fil, lämpligt namngivna." motsäger ju varandra, hade varit snyggare att ha varsin då de blir väldigt mycket kod i en fil men o andra sidan så ärver alla klassar från ghost och overridar ghost så utav den
 // anledningen så passar det ändå att ha allt i en fil
-//  stort sett gjort om varenda klass så de ej använder SMFL, min förståelse är att main och given inte använder SMFL och därför bör detta programmet ej heller göra det
-//  tog mig bara runt 15 timmar att förstå det :(, men har iallafall bra ("bra") förståelse över SMFL nu :/
 using namespace std;
-// kollade spec-sheeten behövs ej, bara en get color behövs :DDDD
 
-// Ghost::Ghost(Pacman &pacman, Point const &start_position, Grid &grid, int speed, const std::string &colorName, Point const &scatter_position)
-//     : pacman(pacman), start_position(start_position), grid(grid), speed(speed), colorName(colorName), scatter_position(scatter_position)
-// anledning till att gör om är att grid, speed och scatter position ej används. pacman användes men kan istället kallas med en return och gör så att min ghost inte är beroende av pacman, speciellt eftersom allt det ska göra är att hämta pacman position
 Ghost::Ghost(Point const &start_position, const string &colorName)
     : position(start_position), colorName(colorName), blinkyPosition(start_position), pinkyPosition(start_position)
 {
@@ -21,10 +15,7 @@ void Ghost::set_position(const Point &new_position)
   position.x = new_position.x;
   position.y = new_position.y;
 }
-// Point Ghost::get_target_position() const
-// {
-//   return Point{lastTargetPosition.x, lastTargetPosition.y};
-// }
+
 Point Ghost::get_position()
 {
   return Point{position.x, position.y};
@@ -49,15 +40,8 @@ Point Blinky::get_scatter_point(const Point &pacmanPosition) const
 }
 void Blinky::set_position(const Point &new_position)
 {
-  // position.x = new_position.x;
-  // position.y = new_position.y;
   Ghost::set_position(new_position); // snyggare lösning
 }
-// Point Blinky::get_target_position() const
-// {
-//   // return Point{lastTargetPosition.x, lastTargetPosition.y};
-//   return lastTargetPosition;
-// }
 Point Blinky::get_position()
 {
   return Point{position.x, position.y};
@@ -101,10 +85,6 @@ void Pinky::set_position(const Point &new_position)
 {
   Ghost::set_position(new_position);
 }
-// Point Pinky::get_target_position() const
-// {
-//   return lastTargetPosition;
-// }
 Point Pinky::get_position()
 {
   return Point{position.x, position.y};
@@ -149,10 +129,6 @@ void Clyde::set_position(const Point &new_position)
 {
   Ghost::set_position(new_position);
 }
-// Point Clyde::get_target_position() const
-// {
-//   return lastTargetPosition;
-// }
 Point Clyde::get_position()
 {
   return Point{position.x, position.y};
@@ -204,18 +180,12 @@ string Inky::get_color() const
 {
   return "blue";
 }
-// Point Inky::get_target_position() const
-// {
-//   return CalculateTarget(pacmanPosition, pacmanDirection, blinkyPosition);
-// }
 Point Inky::get_scatter_point([[maybe_unused]] const Point &pacmanPosition) const
 {
   return CalculateTarget(pinkyPosition, blinkyPosition);
 }
 Point Inky::get_chase_point([[maybe_unused]] const Point &pacmanPosition, [[maybe_unused]] const Point &pacmanDirection)
 {
-  // cout << pinkyPosition.x << ", " << pinkyPosition.y << endl;
-  // cout << blinkyPosition.x << ", " << blinkyPosition.y << endl;
   return CalculateTarget(pinkyPosition, blinkyPosition);
 }
 void Inky::set_blinky_position(const Point &new_position)

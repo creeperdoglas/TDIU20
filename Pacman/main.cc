@@ -1,13 +1,11 @@
 #include "full_game/YOUR_CODE_HERE/ghost.h"
-// #include "SFML/Graphics.hpp"
-// #include "given.h"
+
 #include <string>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 #include <map>
 #include <vector>
-
 
 // Information om komplettering:
 //   Kompletteringen kan gälla hela filen och alla filer i labben,
@@ -28,21 +26,15 @@
 
 // Komplettering: Funktioner som inte ska överlagras ska inte vara virtuella.
 
-
-//Kommentar
-// pacman & är en bättre lösning då vi alltid är beroende av pacmans position för att kunna hitta vart våran chase ska vara någonstans.
-// att låta "användaren" ansvara för att uppdatera och hålla koll på det är inte en bra design.
+// Kommentar
+//  pacman & är en bättre lösning då vi alltid är beroende av pacmans position för att kunna hitta vart våran chase ska vara någonstans.
+//  att låta "användaren" ansvara för att uppdatera och hålla koll på det är inte en bra design.
 
 // Städa upp kommentarer innan inlämning
 
 // Kommentar (bonus): Smart att återanvända koden från Pinky. Jag skulle dock argumentera att Inky
 //   inte har med Pinky att göra och borde därför inte känna till Pinky. Det skulle vara ännu
 //   snyggare att bryta ut det gemensamma till en egen funktion som båda kan använda.
-
-
-
-
-
 
 // för kompilering på windows använd:  g++ .\main.cc .\given.cc .\full_game\YOUR_CODE_HERE\ghost.cc -o .\bin\pacman -I"C:\Users\Melker Gustafsson\TDIU20\Pacman"
 // på laptopen, byt ut Melker Gustafsson mot boren
@@ -66,7 +58,6 @@ using namespace std;
 class Ghost_Tester
 {
 public:
-  // map<string, Ghost *> ghosts;
   Pacman pacman;
   vector<Ghost *> ghosts;
   // Pacman pacman;
@@ -75,32 +66,17 @@ public:
       : pacman{},
         ghosts()
   {
-    // assistenten sa att vector skulle visa att man använder polymorfism mer, så kommer lägga in en kod men spara den gamla kommenterad
 
     ghosts.push_back(new Blinky(Point{3, 3}, "red"));
     ghosts.push_back(new Pinky(Point{5, 5}, "pink"));
     ghosts.push_back(new Clyde(Point{7, 7}, "orange"));
     ghosts.push_back(new Inky(Point{1, 6}, "blue"));
-
-    // inky position
-    // ghosts["blinky"] = new Blinky(Point{3, 3}, "red");
-    // ghosts["pinky"] = new Pinky(Point{5, 5}, "pink");
-    // ghosts["clyde"] = new Clyde(Point{7, 7}, "orange");
-    // kan lägga till inky om jag antar att blinky och pacman börjar på samma position varje gång
-    // annars skulle en specifik inky pointer behövas eller en massa nya funktioner för att inkys position ska räknas ut direkt och sedan läggas till i mapen
-    // 1, -3 är inkys start position så 1,19
-    // ghosts["inky"] = new Inky(Point{1, 19}, "blue");
   }
 
   void run()
   {
     while (true)
     {
-      // Point current_target = blinky->get_position();
-      // Point next_target;
-
-      // // Call select_new_target with both current and next target
-      // blinky->select_new_target(current_target, next_target);
 
       draw_map();
       cout << "> ";
@@ -140,22 +116,6 @@ public:
             break;
           }
         }
-        // string key = color + " " + to_string(x) + "," + to_string(y); // skapa unik key för varje ghost
-        // if (color == "red")
-        // {
-        //   // cout << "red found" << endl;
-        //   ghosts["blinky"]->set_position(new_pos);
-        // }
-        // else if (color == "pink")
-        // {
-        //   // cout << "pink found" << endl;
-        //   ghosts["pinky"]->set_position(new_pos);
-        // }
-        // else if (color == "orange")
-        // {
-        //   // cout << "orange found" << endl;
-        //   ghosts["clyde"]->set_position(new_pos);
-        // }
       }
 
       if (command == "scatter")
@@ -208,8 +168,6 @@ private:
     Point blinkyPosition;
     Point pinkyPosition;
     Inky *inkyPtr = nullptr;
-    // Point blinkyPosition;
-    // Point pinkyPosition;
 
     for (auto &ghost : ghosts)
     {
@@ -231,39 +189,6 @@ private:
       inkyPtr->set_blinky_position(blinkyPosition);
       inkyPtr->set_pinky_position(pinkyPosition);
     }
-    // gammal som inte funkade
-    //  for (auto &ghost : ghosts)
-    //  {
-    //    if (ghost->get_color() == "red")
-    //    {
-    //      // detta verkar inte uppdatera blinky position samma med pinky, men det borde ju funka?
-    //      // Point blinkyPosition = ghost->get_position();
-    //      // ghost->set_blinky_position(blinkyPosition);
-    //      Point blinkyPosition = ghost->get_position();
-    //      Inky *inkyPtr = dynamic_cast<Inky *>(ghost);
-    //      if (inkyPtr != nullptr)
-    //      {
-    //        inkyPtr->set_blinky_position(blinkyPosition);
-    //      }
-    //      break;
-    //    }
-    //  }
-    //  for (auto &ghost : ghosts)
-    //  {
-    //    if (ghost->get_color() == "pink")
-    //    {
-    //      Point pinkyPosition = ghost->get_chase_point(pacmanPosition, pacmanDirection);
-    //      // ghost->set_pinky_position(pinkyPosition);
-    //      Inky *inkyPtr = dynamic_cast<Inky *>(ghost);
-    //      if (inkyPtr != nullptr)
-    //      {
-    //        inkyPtr->set_pinky_position(pinkyPosition);
-    //      }
-    //    }
-    //  }
-
-    // hmm ger miljoner :/
-    //  std::cout << "Inky's position: " << ghosts["inky"]->get_position().x << ", " << ghosts["inky"]->get_position().y << std::endl;
 
     // Draw Pacman
     if (pacman.get_position() == curr_pos)
@@ -293,38 +218,9 @@ private:
         to_draw[0] = toupper(ghost->get_color()[0]);
       }
     }
-    // for (const auto &pair : ghosts)
-    //   {
-    //     auto ghost = pair.second;
-    //     if (mode)
-    //     {
-    //       if (ghost->get_chase_point(pacmanPosition, pacmanDirection) == curr_pos)
-    //       {
-    //         // cout << "target found" << endl;
-    //         to_draw[1] = tolower(ghost->get_color()[0]);
-    //       }
-    //     }
-    //     else
-    //     {
-    //       if (ghost->get_scatter_point(pacmanPosition) == curr_pos)
-    //       {
-    //         // cout << "target found" << endl;
-    //         to_draw[1] = tolower(ghost->get_color()[0]);
-    //       }
-    //     }
 
-    //     if (ghost->get_position() == curr_pos)
-    //     {
-    //       // cout << "ghost found" << endl;
-    //       to_draw[0] = toupper(ghost->get_color()[0]);
-    //     }
-    //   }
-    // inky specifk, kanske bör lägga till i map
     return to_draw;
   }
-
-  // unique_ptr<Blinky> blinky = make_unique<Blinky>(Point{3, 3}, "red"); //lekte runt lite, men kommer inte lösa vårt problem
-  // Grid grid; behövs ej längre
 
   /*
     En hjälpfunktion för att rita ut spelplanen för testprogrammet.

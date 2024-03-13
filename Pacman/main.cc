@@ -35,7 +35,7 @@
 
 // Komplettering: Funktioner som inte ska överlagras ska inte vara virtuella.
 /// antar att du menade set_position, fixat
-/// tog även bort virtual från get_chase_point i ghost.h, anledning till detta var att blinky alltid starta utanför kartan men kan lägga den manuellt utanför kartan och sedan kommer det visas på kartan (när möjligt) vart inky kommer jaga
+/// tog även bort virtual från get_position i ghost.h, anledning till detta var att blinky alltid starta utanför kartan men kan lägga den manuellt utanför kartan och sedan kommer det visas på kartan (när möjligt) vart inky kommer jaga
 
 // Kommentar
 //  pacman & är en bättre lösning då vi alltid är beroende av pacmans position för att kunna hitta vart våran chase ska vara någonstans.
